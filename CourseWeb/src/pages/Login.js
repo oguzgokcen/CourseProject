@@ -13,15 +13,15 @@ export default function Login() {
 
     const navigate = useNavigate();
 
-    const handleLogin = (data) => {
+    const handleLogin = () => {
         axios.post("http://localhost:7001/api/v1/Login", { email, password },{
             headers: {
               "Content-type": "application/json; charset=UTF-8",
             }
           })
             .then((response) => {
-                if (response.data) {
-                    login(response.data);
+                if (response.data.data) {
+                    login(response.data.data);
                     alertify.success("Giriş başarılı!");
                     navigate("/home");
                 }

@@ -29,7 +29,6 @@ function LoginPage(){
                 console.error("Login failed", error);
                 alert("An error occured. Plase try again");
             }
-            
         }
     }
 
