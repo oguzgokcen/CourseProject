@@ -2,8 +2,9 @@ import {React , useState} from "react";
 import { useAuth } from "../context/AuthContext";
 import alertify from 'alertifyjs';
 import { Button, Card, CardBody, CardTitle, Col, Container, Form, FormGroup, Input, Label, Row} from 'reactstrap';
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import apiClient from '../api/apiClient';
+import { endpoints } from '../api/endpoints';
 
 
 export default function Login() {
@@ -14,11 +15,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     const handleLogin = () => {
-        axios.post("http://localhost:7001/api/v1/Login", { email, password },{
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-            }
-          })
+        apiClient.post(endpoints.login, { email, password })
             .then((response) => {
                 if (response.data.data) {
                     login(response.data.data);

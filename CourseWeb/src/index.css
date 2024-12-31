@@ -1,17 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root {
+  /* Font Family */
+  --font-family: "Source Serif 4", serif;
+  /* Font Weights */
+  --font-weight-extra-light: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semi-bold: 600;
+  --font-weight-bold: 700;
 }
 
 h1 {
@@ -19,4 +17,24 @@ h1 {
   font-weight: 700;
   font-size: 2.5rem;
   color: #333;
+}
+
+.add-basket-button {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  color: #2d2f31;
+  border-radius: 10px;
+  border: 1px solid #2d2f31;
+  text-decoration: none;
+}
+
+.add-basket-button:hover {
+  background-color: rgba(23, 57, 83, 0.12);
+  border: 1px solid #2d2f31;
+  color: #2d2f31;
 }
