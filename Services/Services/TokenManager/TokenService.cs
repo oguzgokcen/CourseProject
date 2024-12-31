@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
-namespace CourseApi.Service.CourseServices.TokenManager
+namespace CourseApi.Service.Services.TokenManager
 {
 	public class TokenService(IOptions<TokenOption> _tokenOptions) : ITokenService
 	{

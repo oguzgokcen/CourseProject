@@ -1,5 +1,5 @@
 ﻿using CourseApi.DataLayer.ServiceDto_s.Requests;
-using CourseApi.Service.CourseServices.UserManager;
+using CourseApi.Service.Services.UserManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

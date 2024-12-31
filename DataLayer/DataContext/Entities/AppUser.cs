@@ -9,6 +9,8 @@ namespace CourseApi.DataLayer.DataContext.Entities
 {
 	public class AppUser:IdentityUser<Guid>
 	{
-		public string FullName { get; set; }
+		public string FullName { get; set; } = default!;
+		public List<Course> BoughtCourses { get; set; } = [];
+		public List<Course> CreatedCourses { get; set; } = [];
 	}
 }

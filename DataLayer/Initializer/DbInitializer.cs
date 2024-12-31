@@ -1,5 +1,6 @@
 ﻿using CourseApi.DataLayer.DataContext;
 using CourseApi.DataLayer.DataContext.Entities;
+using CourseApi.DataLayer.Enums;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,48 @@ namespace CourseApi.DataLayer.Initializer
 				{
 					throw new Exception($"Failed to add user {users[0].UserName} to role Teacher: {string.Join(", ", result2.Errors.Select(e => e.Description))}");
 				}
+			}
+
+			if (!context.Courses.Any())
+			{
+				var teacher = await _userManager.FindByEmailAsync("teacher@example.com");
+
+				var courses = new[]
+				{
+					new Course
+					{
+						Title = "Introduction to Programming",
+						DescriptionHeader = "Learn the basics of programming",
+						PublishedDate = DateTime.Now,
+						Price = 49.99m,
+						Language = Language.English,
+						Rating = 4.5,
+						NumberOfRatings = 100,
+						NumberOfStudents = 1000,
+						Description = "This course covers the basics of programming including variables, loops, and functions.",
+						Categories = new List<CategoryKeywords> { new CategoryKeywords { Keyword = "Programming", SearchTerm ="programming-languages" } },
+						InstructorId = teacher.Id,
+						Instructor = teacher
+					},
+					new Course
+					{
+						Title = "Advanced C# Programming",
+						DescriptionHeader = "Master advanced concepts in C#",
+						PublishedDate = DateTime.Now,
+						Price = 99.99m,
+						Language = Language.English,
+						Rating = 4.8,
+						NumberOfRatings = 200,
+						NumberOfStudents = 500,
+						Description = "This course covers advanced topics in C# including LINQ, async/await, and design patterns.",
+						Categories = new List<CategoryKeywords> { new CategoryKeywords { Keyword = "C#", SearchTerm = "c-sharp" } },
+						InstructorId = teacher.Id,
+						Instructor = teacher
+					}
+				};
+
+				context.Courses.AddRange(courses);
+				await context.SaveChangesAsync();
 			}
 		}
 	}

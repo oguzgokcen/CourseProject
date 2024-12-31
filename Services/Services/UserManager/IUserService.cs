@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CourseApi.Service.CourseServices.UserManager
+namespace CourseApi.Service.Services.UserManager
 {
 	public interface IUserService
 	{

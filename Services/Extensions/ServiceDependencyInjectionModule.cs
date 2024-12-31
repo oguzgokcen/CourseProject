@@ -1,6 +1,8 @@
 ﻿using CourseApi.DataLayer.CommonModels;
-using CourseApi.Service.CourseServices.TokenManager;
-using CourseApi.Service.CourseServices.UserManager;
+using CourseApi.DataLayer.Repositories;
+using CourseApi.Service.Services.CourseManager;
+using CourseApi.Service.Services.TokenManager;
+using CourseApi.Service.Services.UserManager;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,7 +17,12 @@ namespace CourseApi.Service.Extensions
 	{
 		public static IServiceCollection AddServices(this IServiceCollection services)
 		{
+			#region repositories
+			services.AddScoped<ICourseRepository, CourseRepository>();
+
+			#endregion
 			#region services
+			services.AddScoped<ICourseService, CourseService>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<ITokenService, TokenService>();
 			#endregion

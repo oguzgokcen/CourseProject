@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CourseApi.Service.CourseServices.TokenManager
+namespace CourseApi.Service.Services.TokenManager
 {
 	public interface ITokenService
 	{

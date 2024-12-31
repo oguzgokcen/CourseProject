@@ -1,10 +1,10 @@
 ﻿using CourseApi.DataLayer.DataContext.Entities;
 using CourseApi.DataLayer.ServiceDto_s.Requests;
 using CourseApi.DataLayer.ServiceDto_s.Responses;
-using CourseApi.Service.CourseServices.TokenManager;
+using CourseApi.Service.Services.TokenManager;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
-namespace CourseApi.Service.CourseServices.UserManager
+namespace CourseApi.Service.Services.UserManager
 {
 	public class UserService(UserManager<AppUser> _userManager, RoleManager<AppRole> _roleManager, ITokenService _tokenService) : IUserService
 	{
