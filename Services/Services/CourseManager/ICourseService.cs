@@ -12,8 +12,8 @@ namespace CourseApi.Service.Services.CourseManager
 {
 	public interface ICourseService
 	{
-		public Task<BaseApiResponse<IEnumerable<CourseResponseDto>>> GetSearchedCourses(SearchCourseRequest searchCourseRequest);
+		Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetSearchedCourses(SearchCourseRequest searchCourseRequest);
 
-		public Task<BaseApiResponse<Course>> GetCourseById(int id);
+		Task<BaseApiResponse<CourseDetailDto>> GetCourseDetailById(int id);
 	}
 }

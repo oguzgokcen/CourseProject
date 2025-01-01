@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CourseApi.DataLayer.ServiceDto_s.Responses
 {
-	public class BaseApiResponse<T> where T : class
+	public class BaseApiResponse<T>
 	{
 		public T Data { get; private set; }
 		public int StatusCode { get; private set; }
@@ -28,7 +29,7 @@ namespace CourseApi.DataLayer.ServiceDto_s.Responses
 			var problemDetails = new ProblemDetails
 			{
 				Status = statusCode,
-				Title = "Bad Request",
+				Title = ((HttpStatusCode)statusCode).ToString(),
 				Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
 				Extensions = { { "errors", new[] { error } } }
 			};

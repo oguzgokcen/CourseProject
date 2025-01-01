@@ -7,6 +7,7 @@ using AutoMapper;
 using CourseApi.DataLayer.DataContext.Entities;
 using CourseApi.DataLayer.Enums;
 using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
+using CourseApi.DataLayer.ServiceDto_s.Responses.User;
 
 namespace CourseApi.DataLayer.RequestHelpers
 {
@@ -14,10 +15,15 @@ namespace CourseApi.DataLayer.RequestHelpers
 	{
 		public MappingProfiles()
 		{
-			CreateMap<Course, CourseResponseDto>()
+			CreateMap<Course, CourseDetailDto>()
 				.ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories))
 				.ForMember(dest => dest.Instructor, opt => opt.MapFrom(src => src.Instructor))
 				.ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.Language.ToString()));
+
+			CreateMap<Course, GetCourseListDto>()
+				.ForMember(dest => dest.Instructor, opt => opt.MapFrom(src => src.Instructor));
+
+			CreateMap<AppUser, UserDetailDto>();
 
 			CreateMap<CategoryKeywords, CategoryDto>();
 			CreateMap<AppUser, InstructorDto>();

@@ -18,7 +18,7 @@ namespace CourseApi.Controllers
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetCourseById(int id)
 		{
-			var result = await _courseService.GetCourseById(id);
+			var result = await _courseService.GetCourseDetailById(id);
 			return ActionResultInstance(result);
 		}
 }

@@ -4,6 +4,7 @@ using CourseApi.DataLayer.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseApi.DataLayer.Migrations
 {
     [DbContext(typeof(CourseDbContext))]
-    partial class CourseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241231203902_app-user-title-descripton")]
+    partial class appusertitledescripton
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,13 +155,6 @@ namespace CourseApi.DataLayer.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Website")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -170,29 +166,6 @@ namespace CourseApi.DataLayer.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.CategoryKeywords", b =>
@@ -415,25 +388,6 @@ namespace CourseApi.DataLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.CartItem", b =>
-                {
-                    b.HasOne("CourseApi.DataLayer.DataContext.Entities.Course", "Course")
-                        .WithMany("CartItems")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("CourseApi.DataLayer.DataContext.Entities.AppUser", "User")
-                        .WithMany("CartItems")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.Course", b =>
                 {
                     b.HasOne("CourseApi.DataLayer.DataContext.Entities.AppUser", "Instructor")
@@ -498,14 +452,7 @@ namespace CourseApi.DataLayer.Migrations
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.AppUser", b =>
                 {
-                    b.Navigation("CartItems");
-
                     b.Navigation("CreatedCourses");
-                });
-
-            modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.Course", b =>
-                {
-                    b.Navigation("CartItems");
                 });
 #pragma warning restore 612, 618
         }

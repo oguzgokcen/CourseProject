@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
+using CourseApi.Service.UoW;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
@@ -63,6 +64,8 @@ if (builder.Environment.IsDevelopment())
 			});
 	});
 }
+
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 builder.Services.AddServices();
 

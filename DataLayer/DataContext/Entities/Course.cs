@@ -22,6 +22,7 @@ namespace CourseApi.DataLayer.DataContext.Entities
 		public string? ImageUrl { get; set; }
 		public List<CategoryKeywords> Categories { get; set; } = [];
 		public List<AppUser> Users { get; set; } = [];
+		public List<CartItem> CartItems { get; set; } = [];
 		public Guid InstructorId { get; set; }
 		public AppUser Instructor { get; set; } = default!;
 	}

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CourseApi.Service.Services.CartManager;
 
 namespace CourseApi.Service.Extensions
 {
@@ -19,12 +20,13 @@ namespace CourseApi.Service.Extensions
 		{
 			#region repositories
 			services.AddScoped<ICourseRepository, CourseRepository>();
-
+			services.AddScoped<ICartRepository,CartRepository>();
 			#endregion
 			#region services
 			services.AddScoped<ICourseService, CourseService>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<ITokenService, TokenService>();
+			services.AddScoped<ICartService, CartService>();
 			#endregion
 			return services;
 

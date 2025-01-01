@@ -12,8 +12,7 @@ namespace CourseApi.DataLayer.Repositories
 {
 	public interface ICourseRepository
 	{
-		Task<IEnumerable<CourseResponseDto>> GetCourses(SearchCourseRequest searchParams);
-
-		Task<Course?> GetCourseById(int id);
+		Task<IEnumerable<GetCourseListDto>> GetCourses(SearchCourseRequest searchParams);
+		Task<CourseDetailDto?> GetCourseDetailById(int id);
 	}
 }

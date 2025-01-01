@@ -15,26 +15,26 @@ namespace CourseApi.Service.Services.CourseManager
 {
 	public class CourseService(ICourseRepository _courseRepository, IMapper _mapper) : ICourseService
 	{
-		public async Task<BaseApiResponse<IEnumerable<CourseResponseDto>>> GetSearchedCourses(SearchCourseRequest searchCourseRequest)
+		public async Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetSearchedCourses(SearchCourseRequest searchCourseRequest)
 		{
 			var courses = await _courseRepository.GetCourses(searchCourseRequest);
 
 			if(!courses.Any())
 			{
-				return BaseApiResponse<IEnumerable<CourseResponseDto>>.Error("No course has been found for given parameters.");
+				return BaseApiResponse<IEnumerable<GetCourseListDto>>.Error("No course has been found for given parameters.");
 			}
 
-			return BaseApiResponse<IEnumerable<CourseResponseDto>>.Success(courses);
+			return BaseApiResponse<IEnumerable<GetCourseListDto>>.Success(courses);
 		}
 
-		public async Task<BaseApiResponse<Course>> GetCourseById(int id)
+		public async Task<BaseApiResponse<CourseDetailDto>> GetCourseDetailById(int id)
 		{
-			var course = await _courseRepository.GetCourseById(id);
+			var course = await _courseRepository.GetCourseDetailById(id);
 			if (course == null)
 			{
-				return BaseApiResponse<Course>.Error("No course has been found");
+				return BaseApiResponse<CourseDetailDto>.Error("No course has been found");
 			}
-			return BaseApiResponse<Course>.Success(course);
+			return BaseApiResponse<CourseDetailDto>.Success(course);
 		}
 
 	}

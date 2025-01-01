@@ -15,21 +15,21 @@ namespace CourseApi.DataLayer.Repositories
 {
 	public class CourseRepository(CourseDbContext _dbContext,IMapper _mapper) : ICourseRepository
 	{
-		public async Task<IEnumerable<CourseResponseDto>> GetCourses(SearchCourseRequest searchParams)
+		public async Task<IEnumerable<GetCourseListDto>> GetCourses(SearchCourseRequest searchParams)
 		{
-			var query = _dbContext.Courses.Include(x=> x.Categories).Include(x=> x.Instructor)
+			var query = _dbContext.Courses.Include(x=> x.Instructor)
 				.Where(x => x.Title.ToLower().Contains(searchParams.Keyword.ToLower()));
 
 			if(searchParams.PageNumber.HasValue && searchParams.PageSize.HasValue)
 			{
 				query = query.Skip(searchParams.PageNumber.Value).Take(searchParams.PageSize.Value);
 			}
-			return await query.ProjectTo<CourseResponseDto>(_mapper.ConfigurationProvider).ToListAsync();
+			return await query.ProjectTo<GetCourseListDto>(_mapper.ConfigurationProvider).ToListAsync();
 		}
 
-		public async Task<Course?> GetCourseById(int id)
+		public async Task<CourseDetailDto?> GetCourseDetailById(int id)
 		{
-			return await _dbContext.Courses.FirstOrDefaultAsync(x => x.Id == id);
+			return await _dbContext.Courses.Include(x=>x.Categories).Include(x=> x.Instructor).ProjectTo<CourseDetailDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 	}

@@ -15,6 +15,8 @@ namespace CourseApi.DataLayer.DataContext
 		public DbSet<Course> Courses { get; set; }
 		public DbSet<CategoryKeywords> CategoryKeywords { get; set; }
 
+		public DbSet<CartItem> CartItems { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -79,6 +81,34 @@ namespace CourseApi.DataLayer.DataContext
 				entity.Property(u => u.FullName)
 					.IsRequired()
 					.HasMaxLength(100);
+
+				entity.Property(u => u.Title)
+					.HasDefaultValue("").HasMaxLength(50);
+
+				entity.Property(u => u.Description)
+					.HasDefaultValue("").HasMaxLength(200);
+
+				entity.Property(u => u.Website)
+					.HasDefaultValue("").HasMaxLength(100);
+			});
+
+			modelBuilder.Entity<CartItem>(entity =>
+			{
+				entity.HasKey(ci => ci.Id);
+				entity.Property(ci => ci.CourseId)
+					.IsRequired();
+				entity.Property(ci => ci.UserId)
+					.IsRequired();
+				entity.HasOne(ci => ci.Course)
+					.WithMany(c => c.CartItems)
+					.HasForeignKey(ci => ci.CourseId)
+					.OnDelete(DeleteBehavior.NoAction)
+					.IsRequired();
+				entity.HasOne(ci => ci.User)
+					.WithMany(u => u.CartItems)
+					.HasForeignKey(ci => ci.UserId)
+					.OnDelete(DeleteBehavior.NoAction)
+					.IsRequired();
 			});
 
 
