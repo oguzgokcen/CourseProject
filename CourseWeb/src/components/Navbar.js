@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FaSearch, FaShoppingCart, FaUserCircle } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 export default function Navbar() {
 
     const { user, logout } = useAuth();
+    const location = useLocation();
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,39 +38,35 @@ export default function Navbar() {
                         </li>
                     </ul>
 
-                    {/* Search Bar */}
-                    <form className="d-flex me-auto w-50">
-                        <input
-                            className="form-control"
-                            type="search"
-                            placeholder="Search for anything"
-                            aria-label="Search"
-                        />
-                        <button className="btn btn-outline-secondary ms-2" type="submit">
-                            <FaSearch />
-                        </button>
-                    </form>
+                    {location.pathname == "/profile" || location.pathname == "/login" ? null : (
+                        <form className="d-flex me-auto w-50">
+                            <input
+                                className="form-control"
+                                type="search"
+                                placeholder="Search for anything"
+                                aria-label="Search"
+                            />
+                            <button className="btn btn-outline-secondary ms-2" type="submit">
+                                <FaSearch />
+                            </button>
+                        </form>
+                    )}
 
                     {/* Right Menu */}
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
-                            <a className="nav-link" href="/my-learning">
-                                My Learning
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/teach">
-                                Teach
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/cart">
-                                <FaShoppingCart />
-                            </a>
-                        </li>
-
-                        {/* User Profile Dropdown */}
                         {user ? (
+                            <>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/my-learning">
+                                    My Learning
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/cart" style={{display: "flex", gap: "5px", alignItems: "center" }}>
+                                    My Cart
+                                    <FaShoppingCart />
+                                </a>
+                            </li>
                             <li className="nav-item dropdown">
                                 <a
                                     className="nav-link dropdown-toggle"
@@ -102,14 +100,22 @@ export default function Navbar() {
                                             Logout
                                         </button>
                                     </li>
-                                </ul>
-                            </li>
+                                    </ul>
+                                </li>
+                            </>
                         ) : (
+                            <>
                             <li className="nav-item">
                                 <a className="nav-link" href="/login">
                                     Login
                                 </a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/register">
+                                    Register
+                                </a>
+                            </li>
+                            </>
                         )}
                     </ul>
                 </div>

@@ -4,4 +4,5 @@ export const endpoints = {
     comments: "/comment",
     login: "/login",
     courseDetail: "/course",
+    userDetails: "/user/profile",
 };

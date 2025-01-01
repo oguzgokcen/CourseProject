@@ -1,0 +1,242 @@
+.input-label {
+    font-size: 14px;
+    color: #2D2F31;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+/* Input Field Base */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="search"],
+textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--gray-900);
+    line-height: 24px;
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+}
+
+    input:focus,
+    textarea:focus {
+        border: 1px solid var(--gray-900);
+        box-shadow: 0px 0px 8px 0px rgba(6, 28, 61, 0.12);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: var(--gray-500);
+    }
+/* Success and Error States */
+.input-success {
+    border: 1px solid var(--success-500);
+    background: var(--white);
+}
+
+    .input-success:focus {
+        box-shadow: 0px 1px 4px 0px rgba(15, 153, 24, 0.10);
+    }
+
+.input-error {
+    border: 1px solid var(--error-500);
+    background: var(--white);
+}
+
+    .input-error:focus {
+        box-shadow: 0px 1px 4px 0px rgba(229, 69, 69, 0.10);
+    }
+/* Error and Success Messages */
+.message-error,
+.message-success {
+    margin-top: 0.50rem;
+    font-size: 12px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    line-height: 100%; /* 12px */
+    letter-spacing: 0.12px;
+    text-transform: uppercase;
+}
+
+.message-error {
+    color: var(--error-500);
+}
+
+.message-success {
+    color: var(--success-500);
+}
+
+    .message-error i,
+    .message-success i {
+        font-size: 18px;
+    }
+/* Input with Icons */
+.input-wrapper {
+    position: relative;
+}
+
+    .input-wrapper input {
+        padding-right: 2.5rem;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size:26px;
+    }
+
+.input-wrapper-top {
+    position: relative;
+}
+
+    .input-wrapper-top input {
+        padding-left: 2.5rem;
+    }
+
+    .input-wrapper-top i {
+        position: absolute;
+        top: 50%;
+        left: 1rem;
+        transform: translateY(-50%);
+        color: var(--gray-100);
+        cursor: pointer;
+    }
+.input-description {
+    color: var(--gray-500, #838E9E);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 16px;
+}
+/* Loading Spinner for Search */
+.loading-spinner {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #adb5bd;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+/* Input Wrapper Styles */
+.input-with-prefix,
+.input-with-suffix {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 16px;
+}
+
+    /* Prefix Styling */
+    .input-with-prefix span {
+        padding: 0.75rem 1rem;
+        color: var(--gray-700);
+        background-color: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 12px 0 0 12px;
+    }
+
+    /* Suffix Styling */
+    .input-with-suffix span {
+        padding: 0.75rem 1rem;
+        color: var(--gray-700);
+        background-color: var(--white);
+        border: 1px solid var(--gray-100);
+        border-radius: 0 12px 12px 0;
+    }
+
+    /* Prefix and Suffix Together */
+    .input-with-prefix.input-with-suffix span:first-child {
+        border-radius: 12px 0 0 0; /* Remove bottom-right radius of the prefix */
+    }
+
+    .input-with-prefix.input-with-suffix span:last-child {
+        border-radius: 0 12px 0 0; /* Remove bottom-left radius of the suffix */
+    }
+
+    /* Input Field Styling */
+    .input-with-prefix input,
+    .input-with-suffix input {
+        border: none;
+        outline: none;
+        padding: 0.75rem;
+        flex-grow: 1;
+        font-size: 16px;
+    }
+
+        .input-with-prefix input:focus,
+        .input-with-suffix input:focus {
+            box-shadow: none;
+        }
+
+
+
+/* Textarea Styling */
+textarea {
+    resize: vertical;
+    min-height: 100px;
+    padding: 1rem;
+    border-radius: 12px;
+}
+/* Validation States */
+.validation-error {
+    font-size: 14px;
+    color: var(--error-500);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Calendar background */
+.flatpickr-calendar {
+    border-radius: 12px;
+    background-color: var(--white); /* Calendar background color */
+    border: 1px solid var(--gray-100); /* Calendar border color */
+}
+
+/* Selected date */
+.flatpickr-day.selected {
+    background-color: var(--primary-500); /* Highlight selected date */
+    color: white;
+}
+
+/* Hovered date */
+.flatpickr-day:hover {
+    background-color: var(--primary-50); /* Hover effect */
+    color: black;
+}
+
+/* Disabled dates */
+.flatpickr-day.disabled {
+    color: var(--gray-400);
+    background-color: var(--gray-100);
+    cursor: not-allowed;
+}
+
+/* Hover Effects */
