@@ -1,0 +1,23 @@
+@media (min-width: 992px) {
+    .basketInfoContainer {
+        margin-top: 100px !important;
+    }
+}
+
+.btn-purple {
+    background-color: #a435f0;
+    color: var(--white);
+    border: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-purple:hover {
+    background-color: #8710d8;
+}
+
+.btn-purple:disabled {
+    background-color: #8710d8;
+    cursor: not-allowed;
+}

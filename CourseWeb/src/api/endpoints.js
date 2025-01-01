@@ -5,4 +5,5 @@ export const endpoints = {
     login: "/login",
     courseDetail: "/course",
     userDetails: "/user/profile",
+    cart:"/cart",
 };

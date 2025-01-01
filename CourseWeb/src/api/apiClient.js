@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const apiClient = axios.create({
     baseURL: "http://localhost:7001/api/v1",
@@ -23,6 +24,9 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
+      if(error.code === "ECONNABORTED"){
+        return {code: 408};
+      }
       if (error.response) {
         const { status } = error.response;
         if (status === 401) {

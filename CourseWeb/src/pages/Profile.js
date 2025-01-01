@@ -1,5 +1,4 @@
 import React, { useState , useEffect} from "react";
-import "../css/inputs.css";
 import apiClient from "../api/apiClient";
 import { endpoints } from "../api/endpoints";
 import alertify from "alertifyjs";
@@ -160,7 +159,5 @@ const styles = {
         marginTop: '100px',
     }
 }
-
-//todo user save
 
 export default Profile;

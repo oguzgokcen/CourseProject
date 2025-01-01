@@ -7,12 +7,15 @@ import CategoryKeywords from "../components/CategoryKeywords";
 import { Card, CardBody, CardImg, CardText } from "reactstrap";
 import { FaStar } from 'react-icons/fa';
 import { TbWorld } from 'react-icons/tb';
+import alertify from "alertifyjs";
+import NotFound from "./NotFound";
 
 const CourseDetail = () => {
     const { courseId } = useParams();
 
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         getCourseDetail(courseId);
@@ -23,13 +26,27 @@ const CourseDetail = () => {
             const response = await apiClient.get(`${endpoints.courseDetail}/${courseId}`);
             setCourse(response.data.data);
         } catch (error) {
-            console.error("Error fetching course detail:", error);
+            setError(error);
         }
         setLoading(false);
     }
 
+    const handleAddBasket = async () => {
+        try {
+            const response = await apiClient.post(`${endpoints.cart}/${courseId}`);
+            if(response.status === 200){
+                alertify.success("Course added to basket");
+            }else{
+                alertify.error(response.data.problemDetails.errors[0]);
+            }
+        } catch (error) {
+            alertify.error(error);
+        }
+    }
+
     if (loading) return <Spinner loading={loading} />;
 
+    if (error) return (<NotFound/>);
     return (
         <>
             <div style={styles.page}>
@@ -52,13 +69,13 @@ const CourseDetail = () => {
                     </div>
                     <div className="col-5" >
                         <Card style={styles.sideCard}>
-                            <CardImg src={course.imageUrl} alt={course.name} style={styles.courseImage} />
+                            <CardImg src={course.imageUrl?course.imageUrl:"/DefaultCourseImg.png"} alt={course.name} style={styles.courseImage} />
                             <CardBody>
                                 <CardText>
                                     <strong style={styles.price}>£{course.price.toFixed(2)}</strong>
                                 </CardText>
                                 <div style={styles.buttonContainer}>
-                                    <a href={`/course/${course.id}`} className="add-basket-button">Sepete Ekle</a>
+                                    <button onClick={handleAddBasket} className="add-basket-button w-100">Sepete Ekle</button>
                                 </div>
                             </CardBody>
                         </Card>
@@ -151,7 +168,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         gap: '20px',
-    }
+    },
 };
 
 export default CourseDetail;
