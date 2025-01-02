@@ -12,7 +12,10 @@ namespace CourseApi.DataLayer.Repositories
 	{
 		Task<IEnumerable<CourseDetailDto>> GetCartCourses(Guid userId);
 		Task AddCartItem(CartItem CartItem);
-
+		void UpdateCart(CartItem Cart);
+		void RemoveCartItem(CartItem cartItem);
+		Task<CartItem?> IsCartItemExists(int courseId, Guid userId);
 		Task<bool> IsCourseExistsInUserCart(int courseId, Guid userId);
+
 	}
 }

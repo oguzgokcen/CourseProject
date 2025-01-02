@@ -21,17 +21,11 @@ namespace CourseApi.Controllers
 			return ActionResultInstance(result);
 		}
 
-		//[HttpDelete("{courseId}")]
-		//public async Task<IActionResult> RemoveFromCart(int courseId)
-		//{
-		//	var result = await _cartService.RemoveFromCart(courseId, UserId!.Value);
-		//	return ActionResultInstance(result);
-		//}
 
 		[HttpDelete("{courseId}")]
 		public async Task<IActionResult> RemoveFromCart(int courseId)
 		{
-			var result = await _cartService.RemoveFromCart(id);
+			var result = await _cartService.RemoveFromCartAsync(courseId, UserId!.Value);
 			return ActionResultInstance(result);
 		}
 	}

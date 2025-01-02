@@ -18,8 +18,6 @@ namespace CourseApi.Service.Services.CartManager
 		public async Task<BaseApiResponse<GetCartItemsDto>> GetCartItems(Guid userId)
 		{
 			var courses =await _cartRepository.GetCartCourses(userId);
-			if(!courses.Any())
-				return BaseApiResponse<GetCartItemsDto>.Error("You dont have any course at the Cart! Add now.",404);
 			var response = new GetCartItemsDto()
 			{
 				Courses = courses,
@@ -40,6 +38,16 @@ namespace CourseApi.Service.Services.CartManager
 				UserId = userId
 			};
 			await _cartRepository.AddCartItem(cartItem);
+			await _unitOfWork.SaveChangesAsync();
+			return BaseApiResponse<bool>.Success(true);
+		}
+
+		public async Task<BaseApiResponse<bool>> RemoveFromCartAsync(int courseId, Guid userId)
+		{
+			var cartItem = await _cartRepository.IsCartItemExists(courseId, userId);
+			if (cartItem == null)
+				return BaseApiResponse<bool>.Error("This course is not in your cart!");
+			_cartRepository.RemoveCartItem(cartItem);
 			await _unitOfWork.SaveChangesAsync();
 			return BaseApiResponse<bool>.Success(true);
 		}

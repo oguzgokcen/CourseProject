@@ -13,5 +13,6 @@ namespace CourseApi.Service.Services.CartManager
 	{
 		Task<BaseApiResponse<GetCartItemsDto>> GetCartItems(Guid userId);
 		Task<BaseApiResponse<bool>> AddToCartAsync(int courseId, Guid userId);
+		Task<BaseApiResponse<bool>> RemoveFromCartAsync(int courseId, Guid userId);
 	}
 }

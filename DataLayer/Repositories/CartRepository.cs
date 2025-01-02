@@ -39,9 +39,14 @@ namespace CourseApi.DataLayer.Repositories
 		//	return Cart;
 		//}
 
+		public async Task<CartItem?> IsCartItemExists(int courseId, Guid userId)
+		{
+			return await _dbContext.CartItems.FirstOrDefaultAsync(x => x.CourseId == courseId && x.UserId == userId);
+		}
 		public async Task<bool> IsCourseExistsInUserCart(int courseId, Guid userId)
 		{
 			return await _dbContext.CartItems.AnyAsync(x => x.CourseId == courseId && x.UserId == userId);
 		}
+
 	}
 }
