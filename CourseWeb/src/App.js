@@ -10,6 +10,8 @@ import CourseDetail from './pages/CourseDetail';
 import Cart from './pages/Cart';
 import NotFound from './pages/NotFound';
 import Checkout from './pages/Checkout';
+import MyLearning from './pages/MyLearning';
+import Search from './pages/Search';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -18,13 +20,15 @@ function App() {
       <CartProvider>
         <Navbar/>
         <Routes>
-          <Route path="/login" element={<Login/>}></Route>
+        <Route path="/login" element={<Login/>}></Route>
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}></Route>
         <Route path="/cart" element={<Cart/>}></Route>
         <Route path="/" element={<HomePage/>}></Route>
         <Route path="/course/:courseId" element={<CourseDetail/>}></Route>
         <Route path="/checkout" element={<Checkout/>}></Route>
-          <Route path="*" element={<NotFound/>}></Route>
+        <Route path="/my-learning" element={<ProtectedRoute><MyLearning/></ProtectedRoute>}></Route>
+        <Route path="/search/:searchTerm" element={<Search/>}></Route>
+        <Route path="*" element={<NotFound/>}></Route>
         </Routes>
       </CartProvider>
     </AuthProvider>

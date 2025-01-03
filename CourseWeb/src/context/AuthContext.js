@@ -19,6 +19,7 @@ export const AuthProvider = ({children}) => {
             localStorage.setItem("token", token);
             const decoded = jwtDecode(token);
             localStorage.setItem("user", JSON.stringify(decoded));
+            setUser(decoded);
         }
     }
 

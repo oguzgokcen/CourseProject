@@ -20,7 +20,7 @@ export default function Login() {
                 if (response.data.data) {
                     login(response.data.data);
                     alertify.success("Giriş başarılı!");
-                    navigate("/home");
+                    navigate("/");
                 }
             })
             .catch((error) => {

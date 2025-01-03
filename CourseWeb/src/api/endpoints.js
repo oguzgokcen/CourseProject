@@ -8,4 +8,5 @@ export const endpoints = {
     cart:"/cart",
     checkIfBought: "/course/checkifbought",
     payment: "/payment",
+    myLearning: "/user/profile/course",
 };
