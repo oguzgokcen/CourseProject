@@ -9,18 +9,24 @@ import ProtectedRoute from './components/ProtectedRoute';
 import CourseDetail from './pages/CourseDetail';
 import Cart from './pages/Cart';
 import NotFound from './pages/NotFound';
+import Checkout from './pages/Checkout';
+import { CartProvider } from './context/CartContext';
+
 function App() {
   return (
     <AuthProvider>
-      <Navbar/>
-      <Routes>
-        <Route path="/login" element={<Login/>}></Route>
+      <CartProvider>
+        <Navbar/>
+        <Routes>
+          <Route path="/login" element={<Login/>}></Route>
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}></Route>
         <Route path="/cart" element={<Cart/>}></Route>
         <Route path="/" element={<HomePage/>}></Route>
         <Route path="/course/:courseId" element={<CourseDetail/>}></Route>
-        <Route path="*" element={<NotFound/>}></Route>
-      </Routes>
+        <Route path="/checkout" element={<Checkout/>}></Route>
+          <Route path="*" element={<NotFound/>}></Route>
+        </Routes>
+      </CartProvider>
     </AuthProvider>
   );
 }

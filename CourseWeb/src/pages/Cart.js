@@ -1,49 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import CardItemCourse from '../components/CardItemCourse';
 import '../css/carditem.css';
-import apiClient from '../api/apiClient';
-import { endpoints } from '../api/endpoints';
 import Spinner from '../components/Spinner';
-import NotFound from './NotFound';
-import alertify from "alertifyjs";
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const Cart = () => {
-    
-    const [courseItems, setCourseItems] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
-
+    const { cart, totalPrice, getCartItems, handleRemoveFromCart } = useCart();
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getCartItems();
+        loadCartItems();
     }, []);
-
-    const getCartItems = async () => {
-        try {
-            const response = await apiClient.get(endpoints.cart);
-            setCourseItems(response.data.data.courses);
-            setTotalPrice(response.data.data.totalPrice);
-        } catch (error) {
-            setError(error);
-        }
+ 
+    const loadCartItems = async () => {
+        await getCartItems();
         setLoading(false);
     }
 
-    const handleRemoveFromCart = async (courseId) => {
-        try {
-            const response = await apiClient.delete(`${endpoints.cart}/${courseId}`);
-            if(response.status === 200){
-                alertify.success("Course removed from cart");
-                getCartItems();
-            }else{
-                alertify.error(response.data.problemDetails.errors[0]);
-            }
-        } catch (error) {
-            alertify.error(error);
-        }
+    const handleCheckout = () => {
+        navigate("/checkout");
     }
-
 
     if (loading) return <Spinner loading={loading} />;
 
@@ -54,13 +32,17 @@ const Cart = () => {
                     <h1 style={styles.headerText}>Shopping Cart</h1>
                     <h4 style={styles.subHeaderText}>Your Cart</h4>
                     <hr />
-                    {courseItems.length === 0 ? (
+                    {cart.length === 0 ? (
                         <div>
                             <h1>No items in cart</h1>
                         </div>
                     ) : (
-                        courseItems.map((course) => (
-                            <CardItemCourse course={course} handleRemoveFromCart={() => handleRemoveFromCart(course.id)} />
+                        cart.map((course) => (
+                            <CardItemCourse 
+                                key={course.id}
+                                course={course} 
+                                handleRemoveFromCart={() => handleRemoveFromCart(course.id)} 
+                            />
                         ))
                     )}
                 </div>
@@ -69,7 +51,13 @@ const Cart = () => {
                     <div className='basketInfo'>
                         <h5>Total:</h5>
                         <h1 style={styles.headerText}>£{totalPrice}</h1>
-                        <button className='btn-purple w-100' disabled={courseItems.length === 0}>Checkout</button>
+                        <button 
+                            className='btn-purple w-100' 
+                            onClick={handleCheckout} 
+                            disabled={cart.length === 0}
+                        >
+                            Checkout
+                        </button>
                     </div>
                 </div>
             </div>
@@ -77,7 +65,7 @@ const Cart = () => {
     )
 }
 
-export default Cart
+export default Cart;
 
 const styles = {
     headerText: {

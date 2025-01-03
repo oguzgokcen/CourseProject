@@ -39,3 +39,40 @@ h1 {
   border: 1px solid #2d2f31;
   color: #2d2f31;
 }
+
+.add-basket-button.disabled {
+  background-color: #2d2f31;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.summary h1 {
+  font-weight: bold;
+}
+
+.summary p {
+  font-weight: 400;
+}
+
+.summary h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.btn-purple {
+  background-color: #a435f0;
+  color: var(--white);
+  border: none;
+  padding: 15px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn-purple:hover {
+  background-color: #8710d8;
+}
+
+.btn-purple:disabled {
+  background-color: #8710d8;
+  cursor: not-allowed;
+}

@@ -6,4 +6,6 @@ export const endpoints = {
     courseDetail: "/course",
     userDetails: "/user/profile",
     cart:"/cart",
+    checkIfBought: "/course/checkifbought",
+    payment: "/payment",
 };

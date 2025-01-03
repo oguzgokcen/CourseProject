@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 import { FaSearch, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 export default function Navbar() {
 
     const { user, logout } = useAuth();
+    const { cart } = useCart();
     const location = useLocation();
 
     return (
@@ -27,10 +29,8 @@ export default function Navbar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
-                {/* Navbar content */}
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto">
-                        {/* Categories Link */}
                         <li className="nav-item">
                             <a className="nav-link" href="/categories">
                                 Categories
@@ -41,7 +41,6 @@ export default function Navbar() {
                     {location.pathname == "/profile" || location.pathname == "/login" ? null : (
                         <form className="d-flex me-auto w-50">
                             <input
-                                className="form-control"
                                 type="search"
                                 placeholder="Search for anything"
                                 aria-label="Search"
@@ -62,9 +61,16 @@ export default function Navbar() {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/cart" style={{display: "flex", gap: "5px", alignItems: "center" }}>
+                                <a className="nav-link" href="/cart" style={{display: "flex", gap: "5px", alignItems: "center", position: "relative" }}>
                                     My Cart
-                                    <FaShoppingCart />
+                                    <div style={{ position: "relative" }}>
+                                        <FaShoppingCart />
+                                        {user && cart.length > 0 && (
+                                            <span style={styles.cartBadge}>
+                                                {cart.length}
+                                            </span>
+                                        )}
+                                    </div>
                                 </a>
                             </li>
                             <li className="nav-item dropdown">
@@ -123,3 +129,19 @@ export default function Navbar() {
         </nav>
     );
 }
+
+const styles = {
+    cartBadge: {
+        position: "absolute",
+        top: "-8px",
+        right: "-8px",
+        backgroundColor: "#a435f0",
+        color: "white",
+        borderRadius: "50%",
+        padding: "2px 6px",
+        fontSize: "10px",
+        fontWeight: "bold",
+        minWidth: "16px",
+        textAlign: "center"
+    }
+};

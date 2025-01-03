@@ -1,4 +1,4 @@
-import { createContext, useState,useContext, useEffect } from "react";
+import { createContext, useState,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
@@ -8,7 +8,10 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({children}) => {
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
     const navigate = useNavigate();
 
     const login = (token) => {
@@ -18,13 +21,6 @@ export const AuthProvider = ({children}) => {
             localStorage.setItem("user", JSON.stringify(decoded));
         }
     }
-
-    useEffect(() => {
-        const user = localStorage.getItem("user");
-        if(user){
-            setUser(JSON.parse(user));
-        }
-    }, []);
 
     const logout = () => {
         setUser(null);

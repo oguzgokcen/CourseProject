@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { endpoints } from "../api/endpoints";
 import apiClient from "../api/apiClient";
@@ -9,16 +9,31 @@ import { FaStar } from 'react-icons/fa';
 import { TbWorld } from 'react-icons/tb';
 import alertify from "alertifyjs";
 import NotFound from "./NotFound";
+import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
+
+const CourseStatus = {
+  BOUGHT: 1,
+  IN_CART: 2,
+  NONE: null
+};
 
 const CourseDetail = () => {
     const { courseId } = useParams();
+    const { handleAddToCart, checkCourseInCartOrBought } = useCart();
 
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [notFound, setNotFound] = useState(false);
+    const [isBought, setIsBought] = useState(null);
+    const [checkBoughtLoading, setCheckBoughtLoading] = useState(false);
+    const [boughtDate, setBoughtDate] = useState(null);
+    const [isOnCart, setIsOnCart] = useState(false);
+    const { user } = useAuth();
 
     useEffect(() => {
         getCourseDetail(courseId);
+        checkStatus();
     }, [courseId]);
 
     const getCourseDetail = async (courseId) => {
@@ -26,27 +41,58 @@ const CourseDetail = () => {
             const response = await apiClient.get(`${endpoints.courseDetail}/${courseId}`);
             setCourse(response.data.data);
         } catch (error) {
-            setError(error);
+            setNotFound(true);
         }
         setLoading(false);
     }
 
-    const handleAddBasket = async () => {
-        try {
-            const response = await apiClient.post(`${endpoints.cart}/${courseId}`);
-            if(response.status === 200){
-                alertify.success("Course added to basket");
-            }else{
-                alertify.error(response.data.problemDetails.errors[0]);
+    const checkStatus = async () => {
+        if(user){
+            try {
+                setCheckBoughtLoading(true);
+                const status = await checkCourseInCartOrBought(courseId);
+                setIsBought(status.isBought);
+                if(status.isBought){
+                    setBoughtDate(new Date(status.boughtTime));
+                }else if(status.isOnCart){
+                    setIsOnCart(true);
+                }
+            } catch (error) {
+                alertify.error(error);
             }
-        } catch (error) {
-            alertify.error(error);
+            setCheckBoughtLoading(false);
         }
     }
 
-    if (loading) return <Spinner loading={loading} />;
+    const handleAddBasket = async () => {
+        await handleAddToCart(courseId);
+        setIsOnCart(true);
+    }
 
-    if (error) return (<NotFound/>);
+    const getCourseStatus = () => {
+        if (isBought) {
+            return CourseStatus.BOUGHT;
+        } else if (isOnCart) {
+            return CourseStatus.IN_CART;
+        }
+        return CourseStatus.NONE;
+    };
+
+    const getButtonText = () => {
+        switch (getCourseStatus()) {
+            case CourseStatus.BOUGHT:
+                return "Already Bought";
+            case CourseStatus.IN_CART:
+                return "In Cart";
+            case CourseStatus.NONE:
+                return "Add to Basket";
+            default:
+                return "Add to Basket";
+        }
+    };
+
+    if (loading) return <Spinner loading={loading} />;
+    if (notFound) return <NotFound />;
     return (
         <>
             <div style={styles.page}>
@@ -71,11 +117,21 @@ const CourseDetail = () => {
                         <Card style={styles.sideCard}>
                             <CardImg src={course.imageUrl?course.imageUrl:"/DefaultCourseImg.png"} alt={course.name} style={styles.courseImage} />
                             <CardBody>
-                                <CardText>
-                                    <strong style={styles.price}>£{course.price.toFixed(2)}</strong>
-                                </CardText>
+                                {checkBoughtLoading ? <Spinner loading={checkBoughtLoading} style={{marginTop:"10px",marginBottom:"auto"}} /> : (
+                                    <CardText>
+                                        <strong style={styles.price}>£{course.price.toFixed(2)}</strong>
+                                    </CardText>
+                                )}
                                 <div style={styles.buttonContainer}>
-                                    <button onClick={handleAddBasket} className="add-basket-button w-100">Sepete Ekle</button>
+                                    <button 
+                                        onClick={getCourseStatus() === CourseStatus.NONE ? handleAddBasket : undefined} 
+                                        className={`add-basket-button ${getCourseStatus() !== CourseStatus.NONE ? "disabled" : ""} w-100`}
+                                    >
+                                        {getButtonText()}
+                                    </button>
+                                    {getCourseStatus() === CourseStatus.BOUGHT && 
+                                        <p>Bought on<strong> {boughtDate.toLocaleString('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric' })}</strong></p>
+                                    }
                                 </div>
                             </CardBody>
                         </Card>
@@ -133,7 +189,7 @@ const styles = {
         backgroundColor: '#fff',
         boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
         marginRight: '80px',
-        height: '350px',
+        height: 'auto',
     },
     courseImage: {
         borderRadius: '10px 10px 0 0',
@@ -144,10 +200,6 @@ const styles = {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         padding: '10px 20px',
-    },
-    buttonContainer: {
-        marginTop: 'auto',
-        marginBottom: '50px',
     },
     price: {
         fontSize: '2rem',
@@ -168,6 +220,11 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         gap: '20px',
+    },
+    buttonContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
     },
 };
 
