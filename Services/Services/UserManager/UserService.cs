@@ -5,11 +5,13 @@ using CourseApi.Service.Services.TokenManager;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
 using AutoMapper;
+using CourseApi.DataLayer.Repositories;
+using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
 using CourseApi.DataLayer.ServiceDto_s.Responses.User;
 
 namespace CourseApi.Service.Services.UserManager
 {
-	public class UserService(UserManager<AppUser> _userManager, RoleManager<AppRole> _roleManager, ITokenService _tokenService, IMapper _mapper) : IUserService
+	public class UserService(UserManager<AppUser> _userManager, RoleManager<AppRole> _roleManager, ITokenService _tokenService,ICourseRepository _courseRepository, IMapper _mapper) : IUserService
 	{
 
 		public async Task<BaseApiResponse<string>> UserLogin(LoginRequest loginRequest)
@@ -70,7 +72,7 @@ namespace CourseApi.Service.Services.UserManager
 			{
 				return BaseApiResponse<string>.Error("User not found");
 			}
-			user.FullName = userDetailDto.FullName;
+			user.FullName = userDetailDto.FullName;  //TODO : validator
 			user.Email = userDetailDto.Email;
 			user.Title = userDetailDto.Title;
 			user.Website = userDetailDto.Website;
@@ -81,6 +83,11 @@ namespace CourseApi.Service.Services.UserManager
 				return BaseApiResponse<string>.Error(result.Errors.First().Description);
 			}
 			return BaseApiResponse<string>.Success("User profile successfully updated");
+		}
+
+		public async Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetUserCourses(Guid userId)
+		{
+			return BaseApiResponse<IEnumerable<GetCourseListDto>>.Success(await _courseRepository.GetUserCourses(userId));
 		}
 	}
 }

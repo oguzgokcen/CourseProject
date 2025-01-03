@@ -12,8 +12,7 @@ namespace CourseApi.Controllers
 		[HttpGet("profile")]
 		public async Task<IActionResult> GetUserProfile()
 		{
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-			var response =await _userService.GetUserProfileById(userId);
+			var response =await _userService.GetUserProfileById(UserId!.Value.ToString());
 			return ActionResultInstance(response);
 		}
 
@@ -21,9 +20,15 @@ namespace CourseApi.Controllers
 		[HttpPut("profile")]
 		public async Task<IActionResult> UpdateUserProfile(UpdateUserDetailDto userDetailDto)
 		{
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-			var response = await _userService.UpdateUserProfile(userDetailDto,userId);
+			var response = await _userService.UpdateUserProfile(userDetailDto,UserId!.Value.ToString());
 			return ActionResultInstance(response);
+		}
+
+		[HttpGet("profile/course")]
+		public async Task<IActionResult> GetUserCourses()
+		{
+			var courses = await _userService.GetUserCourses(UserId!.Value);
+			return ActionResultInstance(courses);
 		}
 	}
 }

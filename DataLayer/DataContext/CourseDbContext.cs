@@ -1,4 +1,5 @@
-﻿using CourseApi.DataLayer.DataContext.Entities;
+﻿using Azure;
+using CourseApi.DataLayer.DataContext.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,7 +15,7 @@ namespace CourseApi.DataLayer.DataContext
 
 		public DbSet<Course> Courses { get; set; }
 		public DbSet<CategoryKeywords> CategoryKeywords { get; set; }
-
+		public DbSet<BoughtCourse> BoughtCourses { get; set; }
 		public DbSet<CartItem> CartItems { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -65,7 +66,23 @@ namespace CourseApi.DataLayer.DataContext
 
 				modelBuilder.Entity<Course>()
 					.HasMany(e => e.Users)
-					.WithMany(e => e.BoughtCourses);
+					.WithMany(e => e.BoughtCourses)
+					.UsingEntity<BoughtCourse>(l => l.HasOne<AppUser>().WithMany().HasForeignKey(e =>e.UserId),
+						r => r.HasOne<Course>().WithMany().HasForeignKey(e => e.CourseId),
+						x =>
+					{
+						x.Property(e => e.BoughtDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+					});
+
+				modelBuilder.Entity<BoughtCourse>()
+					.HasOne(uc => uc.User)
+					.WithMany()
+					.HasForeignKey(uc => uc.UserId);
+
+				modelBuilder.Entity<BoughtCourse>()
+					.HasOne(uc => uc.Course)
+					.WithMany()
+					.HasForeignKey(uc => uc.CourseId);
 
 
 				modelBuilder.Entity<Course>()
@@ -111,6 +128,29 @@ namespace CourseApi.DataLayer.DataContext
 					.IsRequired();
 			});
 
+			modelBuilder.Entity<PaymentLog>(entity =>
+			{
+				entity.HasKey(pl => pl.Id);
+				entity.Property(pl => pl.UserId)
+					.IsRequired();
+				entity.Property(pl => pl.CreatedOnUtc)
+					.HasColumnType("datetime")
+					.IsRequired();
+				entity.Property(pl => pl.TotalPrice)
+					.HasColumnType("decimal(10, 2)")
+					.IsRequired();
+				entity.Property(pl => pl.PaymentStatus)
+					.IsRequired();
+				entity.HasOne(pl => pl.User)
+					.WithMany(u => u.PaymentLogs)
+					.HasForeignKey(pl => pl.UserId)
+					.OnDelete(DeleteBehavior.NoAction)
+					.IsRequired();
+				entity.HasMany(pl => pl.BoughtCourses)
+					.WithOne(pi => pi.PaymentLog)
+					.HasForeignKey(pi => pi.PaymentLogId)
+					.OnDelete(DeleteBehavior.NoAction);
+			});
 
 		}
 	}

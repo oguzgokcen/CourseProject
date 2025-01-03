@@ -14,5 +14,7 @@ namespace CourseApi.DataLayer.Repositories
 	{
 		Task<IEnumerable<GetCourseListDto>> GetCourses(SearchCourseRequest searchParams);
 		Task<CourseDetailDto?> GetCourseDetailById(int id);
+		Task<bool> AddCoursesToUser(IEnumerable<Course> cartCourses, Guid userId);
+		Task<IEnumerable<GetCourseListDto>> GetUserCourses(Guid userId);
 	}
 }

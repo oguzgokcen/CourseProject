@@ -1,5 +1,7 @@
-﻿using CourseApi.DataLayer.ServiceDto_s.Requests;
+﻿using CourseApi.DataLayer.DataContext.Entities;
+using CourseApi.DataLayer.ServiceDto_s.Requests;
 using CourseApi.DataLayer.ServiceDto_s.Responses;
+using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
 using CourseApi.DataLayer.ServiceDto_s.Responses.User;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,7 @@ namespace CourseApi.Service.Services.UserManager
 		Task<BaseApiResponse<string>> UserLogin(LoginRequest loginRequest);
 		Task<BaseApiResponse<string>> UserRegister(RegisterRequest registerRequest);
 		Task<BaseApiResponse<UserDetailDto>> GetUserProfileById(string id);
-
 		Task<BaseApiResponse<string>> UpdateUserProfile(UpdateUserDetailDto userDetailDto, string userId);
+		Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetUserCourses(Guid userId);
 	}
 }

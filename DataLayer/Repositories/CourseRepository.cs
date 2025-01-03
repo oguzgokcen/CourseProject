@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
+using Microsoft.AspNetCore.Identity;
 
 namespace CourseApi.DataLayer.Repositories
 {
-	public class CourseRepository(CourseDbContext _dbContext,IMapper _mapper) : ICourseRepository
+	public class CourseRepository(CourseDbContext _dbContext,UserManager<AppUser> _userManager,IMapper _mapper) : ICourseRepository
 	{
 		public async Task<IEnumerable<GetCourseListDto>> GetCourses(SearchCourseRequest searchParams)
 		{
@@ -30,6 +31,23 @@ namespace CourseApi.DataLayer.Repositories
 		public async Task<CourseDetailDto?> GetCourseDetailById(int id)
 		{
 			return await _dbContext.Courses.Include(x=>x.Categories).Include(x=> x.Instructor).ProjectTo<CourseDetailDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Id == id);
+		}
+
+		public async Task<bool> AddCoursesToUser(IEnumerable<Course> cartCourses,Guid userId)
+		{
+			var user = await _userManager.FindByIdAsync(userId.ToString());
+			if (user == null)
+			{
+				return false;
+			}
+
+			user.BoughtCourses.AddRange(cartCourses);
+			return true;
+		}
+
+		public async Task<IEnumerable<GetCourseListDto>> GetUserCourses(Guid userId)
+		{
+			return await _dbContext.BoughtCourses.Include(x=>x.Course).ThenInclude(x=>x.Instructor).Where(x => x.UserId == userId).Select(x=>x.Course).ProjectTo<GetCourseListDto>(_mapper.ConfigurationProvider).ToListAsync();
 		}
 
 	}

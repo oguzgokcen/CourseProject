@@ -22,21 +22,6 @@ namespace CourseApi.DataLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AppUserCourse", b =>
-                {
-                    b.Property<int>("BoughtCoursesId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BoughtCoursesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("AppUserCourse");
-                });
-
             modelBuilder.Entity("CategoryKeywordsCourse", b =>
                 {
                     b.Property<int>("CategoriesId")
@@ -172,6 +157,31 @@ namespace CourseApi.DataLayer.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.BoughtCourse", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("BoughtDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid?>("PaymentLogId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CourseId", "UserId");
+
+                    b.HasIndex("PaymentLogId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BoughtCourses");
+                });
+
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.CartItem", b =>
                 {
                     b.Property<int>("Id")
@@ -282,6 +292,31 @@ namespace CourseApi.DataLayer.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.PaymentLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOnUtc")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PaymentLog");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -385,21 +420,6 @@ namespace CourseApi.DataLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AppUserCourse", b =>
-                {
-                    b.HasOne("CourseApi.DataLayer.DataContext.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("BoughtCoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CourseApi.DataLayer.DataContext.Entities.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CategoryKeywordsCourse", b =>
                 {
                     b.HasOne("CourseApi.DataLayer.DataContext.Entities.CategoryKeywords", null)
@@ -413,6 +433,32 @@ namespace CourseApi.DataLayer.Migrations
                         .HasForeignKey("CoursesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.BoughtCourse", b =>
+                {
+                    b.HasOne("CourseApi.DataLayer.DataContext.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CourseApi.DataLayer.DataContext.Entities.PaymentLog", "PaymentLog")
+                        .WithMany("BoughtCourses")
+                        .HasForeignKey("PaymentLogId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("CourseApi.DataLayer.DataContext.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("PaymentLog");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.CartItem", b =>
@@ -443,6 +489,17 @@ namespace CourseApi.DataLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Instructor");
+                });
+
+            modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.PaymentLog", b =>
+                {
+                    b.HasOne("CourseApi.DataLayer.DataContext.Entities.AppUser", "User")
+                        .WithMany("PaymentLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -501,11 +558,18 @@ namespace CourseApi.DataLayer.Migrations
                     b.Navigation("CartItems");
 
                     b.Navigation("CreatedCourses");
+
+                    b.Navigation("PaymentLogs");
                 });
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.Course", b =>
                 {
                     b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.PaymentLog", b =>
+                {
+                    b.Navigation("BoughtCourses");
                 });
 #pragma warning restore 612, 618
         }

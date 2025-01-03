@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 using CourseApi.Service.UoW;
+using FluentValidation;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
@@ -68,6 +70,8 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 builder.Services.AddServices();
+builder.Services.AddValidators();
+ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("en");
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

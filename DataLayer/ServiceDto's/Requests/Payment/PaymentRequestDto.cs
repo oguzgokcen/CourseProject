@@ -9,9 +9,9 @@ namespace CourseApi.DataLayer.ServiceDto_s.Requests.Payment
 	public record PaymentRequestDto(
 		string CardName,
 		string CardNumber,
-		int expirationMonth,
-		int expirationYear,
-		int CVV,
+		int ExpirationMonth,
+		int ExpirationYear,
+		int Cvv,
 		decimal TotalPrice
 	);
 }

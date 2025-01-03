@@ -18,6 +18,7 @@ namespace CourseApi.Controllers
 					var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 					return userId != null ? Guid.Parse(userId) : (Guid?)null;
 				}
+
 				return null;
 			}
 		}

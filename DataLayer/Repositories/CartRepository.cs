@@ -18,6 +18,11 @@ namespace CourseApi.DataLayer.Repositories
 		{
 			return await _dbContext.CartItems.Include(x=>x.Course).Where(x => x.UserId == userId).Select(x=>x.Course).ProjectTo<CourseDetailDto>(_mapper.ConfigurationProvider).ToListAsync();
 		}
+
+		public async Task<IEnumerable<Course>> GetCoursesOfUserCart(Guid userId)
+		{
+			return await _dbContext.CartItems.Include(x => x.Course).Where(x => x.UserId == userId).Select(x => x.Course).ToListAsync();
+		}
 		public async Task AddCartItem(CartItem CartItem)
 		{
 			await _dbContext.CartItems.AddAsync(CartItem);
@@ -31,13 +36,11 @@ namespace CourseApi.DataLayer.Repositories
 		{
 			_dbContext.CartItems.Remove(cartItem);
 		}
-		//public async Task<Cart> DeleteCart(int id)
-		//{
-		//	var Cart = await _dbContext.Carts.FirstOrDefaultAsync(x => x.Id == id);
-		//	_dbContext.Carts.Remove(Cart);
-		//	await _dbContext.SaveChangesAsync();
-		//	return Cart;
-		//}
+		public void ClearUserCart(Guid userId)
+		{
+			var cartItems = _dbContext.CartItems.Where(x => x.UserId == userId);
+			_dbContext.CartItems.RemoveRange(cartItems);
+		}
 
 		public async Task<CartItem?> IsCartItemExists(int courseId, Guid userId)
 		{

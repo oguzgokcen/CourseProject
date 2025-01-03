@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CourseApi.Service.Services.CartManager;
+using CourseApi.Service.Services.PaymentManager;
 
 namespace CourseApi.Service.Extensions
 {
@@ -27,6 +28,7 @@ namespace CourseApi.Service.Extensions
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddScoped<ICartService, CartService>();
+			services.AddScoped<IPaymentService, PaymentService>();
 			#endregion
 			return services;
 
