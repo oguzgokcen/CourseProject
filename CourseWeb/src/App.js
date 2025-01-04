@@ -12,6 +12,8 @@ import NotFound from './pages/NotFound';
 import Checkout from './pages/Checkout';
 import MyLearning from './pages/MyLearning';
 import Search from './pages/Search';
+import SignUp from './pages/SignUp';
+import Category from './pages/Category';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -21,13 +23,16 @@ function App() {
         <Navbar/>
         <Routes>
         <Route path="/login" element={<Login/>}></Route>
+        <Route path="/signup" element={<SignUp/>}></Route>
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}></Route>
         <Route path="/cart" element={<Cart/>}></Route>
         <Route path="/" element={<HomePage/>}></Route>
         <Route path="/course/:courseId" element={<CourseDetail/>}></Route>
         <Route path="/checkout" element={<Checkout/>}></Route>
         <Route path="/my-learning" element={<ProtectedRoute><MyLearning/></ProtectedRoute>}></Route>
-        <Route path="/search/:searchTerm" element={<Search/>}></Route>
+        <Route path="/search" element={<Search/>}></Route>
+        <Route path="/category/:keyword" element={<Category/>}></Route>
+        <Route path="/notfound" element={<NotFound/>}></Route>
         <Route path="*" element={<NotFound/>}></Route>
         </Routes>
       </CartProvider>

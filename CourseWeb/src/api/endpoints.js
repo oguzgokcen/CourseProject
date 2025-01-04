@@ -9,4 +9,7 @@ export const endpoints = {
     checkIfBought: "/course/checkifbought",
     payment: "/payment",
     myLearning: "/user/profile/course",
+    signup: "/login/register",
+    category: '/course/category',
+    getAllCategory: '/course/categories',
 };

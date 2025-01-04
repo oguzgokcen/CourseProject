@@ -4,11 +4,7 @@ const CategoryKeywords = ({ categories }) => {
     return (
         <div style={styles.categoryContainer}>
             {categories.map(category => (
-                <>
-                    <a href='#' className='add-basket-button' style={styles.categoryButton} key={category.searchTerm}>{category.keyword}</a>
-                    <a href='#' className='add-basket-button' style={styles.categoryButton} key={category.searchTerm}>{category.keyword}</a>
-                    <a href={`/category/${category.searchTerm}`} className='add-basket-button' style={styles.categoryButton} key={category.searchTerm}>{category.keyword}</a>
-                </>
+                <a href={`/category/${category.searchTerm}`} className='add-basket-button' style={styles.categoryButton} key={category.searchTerm}>{category.keyword}</a>
             ))}
         </div>
     );

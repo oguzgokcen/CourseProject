@@ -1,14 +1,42 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { FaSearch, FaShoppingCart, FaUserCircle } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Popper from './Popper';
+import CategoryList from './CategoryList';
+import apiClient from '../api/apiClient';
+import { endpoints } from '../api/endpoints';
 
 export default function Navbar() {
 
     const { user, logout } = useAuth();
     const { cart } = useCart();
     const location = useLocation();
+    const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await apiClient.get(`${endpoints.getAllCategory}`);
+            setCategories(response.data.data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const formattedQuery = searchQuery.trim().replace(/\s+/g, '+');
+        navigate(`/search?q=${formattedQuery}`);
+        setSearchQuery('');
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -32,18 +60,25 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto">
                         <li className="nav-item">
-                            <a className="nav-link" href="/categories">
-                                Categories
-                            </a>
+                            <Popper 
+                                trigger={
+                                    <a className="nav-link" style={{ cursor: 'pointer' }}>
+                                        Categories
+                                    </a>
+                                }
+                                content={<CategoryList categories={categories} />}
+                            />
                         </li>
                     </ul>
 
                     {location.pathname == "/profile" || location.pathname == "/login" ? null : (
-                        <form className="d-flex me-auto w-50">
+                        <form className="d-flex me-auto w-50" onSubmit={handleSearch}>
                             <input
                                 type="search"
                                 placeholder="Search for anything"
                                 aria-label="Search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                             />
                             <button className="btn btn-outline-secondary ms-2" type="submit">
                                 <FaSearch />
@@ -91,11 +126,6 @@ export default function Navbar() {
                                         </a>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item" href="/settings">
-                                            Settings
-                                        </a>
-                                    </li>
-                                    <li>
                                         <hr className="dropdown-divider" />
                                     </li>
                                     <li>
@@ -117,8 +147,8 @@ export default function Navbar() {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/register">
-                                    Register
+                                <a className="nav-link" href="/signup">
+                                    Sign Up
                                 </a>
                             </li>
                             </>

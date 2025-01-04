@@ -1,44 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import { endpoints } from '../api/endpoints';
 import CourseItem from '../components/CourseItem';
 import Spinner from '../components/Spinner';
 import RatingFilter from '../components/RatingFilter';
-import LanguageDropdown from '../components/LanguageDropdown';
+import alertify from 'alertifyjs';
 import Pagination from '@mui/material/Pagination';
 
-const Search = () => {
-    const [searchParams] = useSearchParams();
-    const searchQuery = searchParams.get('q') || '';
+const Category = () => {
+    const { keyword } = useParams();
     const [courses, setCourses] = useState([]);
     const [totalCourses, setTotalCourses] = useState(0);
     const [loading, setLoading] = useState(true);
     const [selectedRating, setSelectedRating] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 4;
-    const [selectedLanguage, setSelectedLanguage] = useState(null);
 
     useEffect(() => {
-        fetchSearchResults();
-    }, [searchQuery, selectedRating, currentPage, selectedLanguage]);
+        fetchCoursesByCategory();
+    }, [keyword, selectedRating, currentPage]);
 
-    const fetchSearchResults = async () => {
+    const fetchCoursesByCategory = async () => {
         try {
             setLoading(true);
-            let url = `${endpoints.courses}/search?keyword=${searchQuery}&pageSize=${pageSize}&pageNumber=${currentPage}`;
+            let url = `${endpoints.category}?searchTerm=${keyword}&pageSize=${pageSize}&pageNumber=${currentPage}`;
             if (selectedRating) {
                 url += `&minRating=${selectedRating}`;
-            }
-            if (selectedLanguage) {
-                url += `&language=${selectedLanguage}`;
             }
             const response = await apiClient.get(url);
             setCourses(response.data.data.data);
             setTotalCourses(response.data.data.totalCount);
         } catch (error) {
+            alertify.error('Error fetching category courses:', error);
             setCourses([]);
-            setTotalCourses(0);
         } finally {
             setLoading(false);
         }
@@ -46,22 +41,16 @@ const Search = () => {
 
     const handleRatingChange = (rating) => {
         setSelectedRating(rating);
-        setCurrentPage(1);
+        setCurrentPage(1); 
     };
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0); 
     };
 
     const handleResetFilters = () => {
         setSelectedRating(null);
-        setSelectedLanguage(null);
-        setCurrentPage(1);
-    };
-
-    const handleLanguageSelect = (language) => {
-        setSelectedLanguage(language);
         setCurrentPage(1);
     };
 
@@ -72,8 +61,8 @@ const Search = () => {
             <div style={styles.page}>
                 <div className="container">
                     <div style={styles.header}>
-                        <h1>Search Results</h1>
-                        {searchQuery && <p>{totalCourses} results for "{searchQuery}"</p>}
+                        <h1>{keyword.replace(/-/g, ' ')}</h1>
+                        <p>Explore our {keyword.replace(/-/g, ' ')} courses</p>
                     </div>
                 </div>
             </div>
@@ -83,17 +72,8 @@ const Search = () => {
                         <RatingFilter
                             selectedRating={selectedRating}
                             onRatingChange={handleRatingChange}
+                            onResetFilters={handleResetFilters}
                         />
-                        <LanguageDropdown
-                            selectedLanguage={selectedLanguage}
-                            onLanguageSelect={handleLanguageSelect}
-                        />
-                        <button 
-                            onClick={handleResetFilters}
-                            className='btn-purple p-3 py-2'
-                        >
-                            Reset filters
-                        </button>
                     </div>
                     <div className="col-md-9 col-sm-12">
                         <div style={styles.resultHeader}>
@@ -105,32 +85,23 @@ const Search = () => {
                             </div>
                         ) : (
                             <>
-                                {courses.length === 0 ? (
-                                    <div style={styles.noResults}>
-                                        <h3>No courses found</h3>
-                                        <p>Try different keywords or browse our course catalog</p>
-                                    </div>
-                                ) : (
-                                    <div style={styles.courseGrid}>
-                                        {courses.map(course => (
-                                            <CourseItem key={course.id} course={course} />
-                                        ))}
-                                    </div>
-                                )}
+                                <div style={styles.courseGrid}>
+                                    {courses.map(course => (
+                                        <CourseItem key={course.id} course={course} />
+                                    ))}
+                                </div>
                             </>
                         )}
                     </div>
                 </div>
-                {courses.length > 0 && (
-                    <div style={styles.pagination}>
-                        <Pagination 
-                            count={totalPages}
-                            page={currentPage}
-                            onChange={(e, page) => handlePageChange(page)}
-                            color="primary"
-                        />
-                    </div>
-                )}
+                <div style={styles.pagination}>
+                    <Pagination 
+                        count={totalPages}
+                        page={currentPage}
+                        onChange={(e, page) => handlePageChange(page)}
+                        color="primary"
+                    />
+                </div>
             </div>
         </>
     );
@@ -184,32 +155,29 @@ const styles = {
         marginBottom: '20px',
         gap: '5px'
     },
-    noResults: {
-        textAlign: 'center',
-        padding: '40px 20px',
+    paginationLink: {
+        border: 'none',
+        backgroundColor: 'transparent',
         color: '#1c1d1f',
-        '& h3': {
-            marginBottom: '16px',
-            fontSize: '24px',
-            fontWeight: 600
-        },
-        '& p': {
-            color: '#6a6f73',
-            marginBottom: '8px'
+        padding: '8px 12px',
+        minWidth: '32px',
+        textAlign: 'center',
+        textDecoration: 'none',
+        fontSize: '14px',
+        fontWeight: 400,
+        ':hover': {
+            backgroundColor: '#f7f9fa'
         }
     },
-    filterHeader: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: '40px'
-    },
-    title: {
+    paginationArrow: {
+        border: '1px solid #d1d7dc',
+        borderRadius: '50%',
+        padding: '8px 12px',
+        backgroundColor: 'white',
         fontSize: '18px',
-        fontWeight: 600,
-        margin: 0
-    },
+        lineHeight: '1',
+        color: '#1c1d1f'
+    }
 };
 
-export default Search;
-
+export default Category;

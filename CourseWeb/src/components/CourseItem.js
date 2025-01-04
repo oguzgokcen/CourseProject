@@ -1,12 +1,13 @@
 import React from "react";
 import Rating from '@mui/material/Rating';
 
-const CardItemCourse = ({ course, handleRemoveFromCart }) => {
+const CourseItem = ({ course }) => {
     return (
         <div style={styles.courseCard}>
             <img src={course.imageUrl ? course.imageUrl : "/DefaultCourseImg.png"} alt="Product" style={styles.cardImage} />
             <div style={styles.cardContent}>
                 <h3 style={styles.cardTitle}>{course.title}</h3>
+                <p>{course.descriptionHeader}</p>
                 <p>Instructor: {course.instructor.fullName}</p>
                 <div style={styles.ratingContainer}>
                     <Rating 
@@ -21,9 +22,9 @@ const CardItemCourse = ({ course, handleRemoveFromCart }) => {
                 <p>{course.totalHours} total hours • {course.totalLessons} lessons • All Levels</p>
             </div>
             <div style={styles.cardActions}>
-                <a href="#" onClick={handleRemoveFromCart} style={styles.actionLink}>Kaldır</a>
+                <a href={`/course/${course.id}`} style={styles.actionLink}>Go To Course Details</a>
+                <p style={styles.price} className='mt-2'>£{course.price}</p>
             </div>
-            <span style={styles.price} className='mt-2'>£{course.price}</span>
         </div>
     );
 };
@@ -35,6 +36,7 @@ const styles = {
         maxWidth: '240px',
         maxHeight: '240px',
         marginRight: '10px',
+        objectFit: 'cover'
     },
     courseCard: {
         display: 'flex',
@@ -44,6 +46,7 @@ const styles = {
         marginTop: '30px',
         maxHeight: '200px',
         gap: '20px',
+        width: '100%',
     },
     cardContent: {
         display: 'flex',
@@ -69,20 +72,18 @@ const styles = {
         flexWrap: 'nowrap',
         textAlign: 'right',
         marginLeft: 'auto',
+        minWidth: 'fit-content'
     },
     actionLink: {
         marginRight: '10px',
         color: '#6c63ff',
         textDecoration: 'none',
         whiteSpace: 'nowrap',
+        fontWeight: 'bold'
     },
     price: {
-        color: '#6c63ff',
         fontWeight: 'bold',
-    },
-    cardLink: {
-        textDecoration: 'none',
-        color: 'inherit',
+        minWidth: 'fit-content'
     },
     ratingContainer: {
         display: 'flex',
@@ -91,4 +92,4 @@ const styles = {
     }
 };
 
-export default CardItemCourse;
+export default CourseItem;

@@ -1,36 +1,56 @@
-import React, { useRef, RefObject, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
-const Popper = () => {
-
-    const divEl1 = useRef();
-    const divEl2 = useRef();
+const Popper = ({ trigger, content, placement = 'bottom' }) => {
+    const triggerRef = useRef();
+    const contentRef = useRef();
     const [isOver, setIsOver] = useState(false);
 
     useEffect(() => {
-        const { current } = divEl1;
-        if (current) {
-            current.addEventListener("mouseover", () => setIsOver(true));
-            current.removeEventListener("mouseover", () => setIsOver(true));
-        }
-    }, [divEl1]);
+        const triggerEl = triggerRef.current;
+        const contentEl = contentRef.current;
 
-    useEffect(() => {
-        const { current } = divEl2;
-        if (current) {
-            current.addEventListener("mouseout", () => setIsOver(false));
-            current.removeEventListener("mouseout", () => setIsOver(false));
+        const handleMouseEnter = () => setIsOver(true);
+        const handleMouseLeave = (e) => {
+            if (!contentEl.contains(e.relatedTarget)) {
+                setIsOver(false);
+            }
+        };
+
+        if (triggerEl && contentEl) {
+            triggerEl.addEventListener("mouseenter", handleMouseEnter);
+            contentEl.addEventListener("mouseleave", handleMouseLeave);
+
+            return () => {
+                triggerEl.removeEventListener("mouseenter", handleMouseEnter);
+                contentEl.removeEventListener("mouseleave", handleMouseLeave);
+            };
         }
-    }, [divEl2]);
+    }, []);
 
     return (
-        <div >
-            <div ref={divEl1}>
-                Popper
+        <div style={{ position: 'relative' }}>
+            <div ref={triggerRef}>
+                {trigger}
             </div>
-            <div style={{ display: isOver ? "block" : "none" }} ref={divEl2}>
-                Show/NotShow
+            <div 
+                ref={contentRef}
+                style={{ 
+                    display: isOver ? "block" : "none",
+                    position: 'absolute',
+                    top: placement === 'bottom' ? '100%' : 'auto',
+                    left: 0,
+                    zIndex: 1000,
+                    backgroundColor: 'white',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                    borderRadius: '4px',
+                    padding: '10px',
+                    maxWidth: '180px'
+                }}
+            >
+                {content}
             </div>
         </div>
-    )
-}
+    );
+};
+
 export default Popper;

@@ -19,12 +19,12 @@ export default function Login() {
             .then((response) => {
                 if (response.data.data) {
                     login(response.data.data);
-                    alertify.success("Giriş başarılı!");
+                    alertify.success("Login successful!");
                     navigate("/");
                 }
             })
             .catch((error) => {
-                alertify.error("Giriş başarısız! " + error);
+                alertify.error("Login failed! " + error);
             });
     }
 
@@ -36,12 +36,12 @@ export default function Login() {
                 <Col md="12">
                     <Card style={{maxWidth: '400px', margin: '0 auto'}}>
                         <CardBody>
-                            <CardTitle tag="h3" className="text-center mb-4">Giriş Yap</CardTitle>
+                            <CardTitle tag="h3" className="text-center mb-4">Login</CardTitle>
                             <Form>
                                 <FormGroup>
-                                    <Label for="email">Kullanıcı Adı</Label>
+                                    <Label for="email">Email</Label>
                                     <Input
-                                    type='text'
+                                    type='email'
                                     name='email'
                                     id='email'
                                     value={email}
@@ -50,17 +50,17 @@ export default function Login() {
                                     />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="password">Şifre</Label>
+                                    <Label for="password">Password</Label>
                                     <Input
-                                    type='text'
+                                    type='password'
                                     name='password'
                                     id='password'
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    placeholder='Şifre'
+                                    placeholder='Password'
                                     />
                                 </FormGroup>
-                                <Button color='primary' block onClick={handleLogin}>Giriş Yap</Button>
+                                <Button color='primary' block onClick={handleLogin}>Login</Button>
                             </Form>
                         </CardBody>
                     </Card>

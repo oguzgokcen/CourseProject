@@ -19,6 +19,9 @@ const Checkout = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [message, setMessage] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
+
 
     const handleInputChange = ({ target }) => {
         if (target.name === 'number') {
@@ -94,7 +97,7 @@ const Checkout = () => {
                     cardName: cardDetails.name,
                     cardNumber: cardDetails.number.replace(/\s+/g, ''),
                     expirationMonth: parseInt(month),
-                    expirationYear: parseInt(year),
+                    expirationYear: parseInt(`20${year}`),
                     cvv: parseInt(cardDetails.cvc),
                     totalPrice: totalPrice
                 };
@@ -104,9 +107,11 @@ const Checkout = () => {
                 if(response.status === 200){
                     clearCart();
                     setShowSuccessModal(true);
+                    setIsSuccess(true);
                 }
             } catch (error) {
-                alertify.error(error);
+                setIsSuccess(false);
+                setMessage(error);
             }
         } else {
             alertify.error('Please correct the errors in the form.');
@@ -200,6 +205,7 @@ const Checkout = () => {
                                     {errors.cvc && <span className="invalid-feedback">{errors.cvc}</span>}
                                 </div>
                             </div>
+                            {message && <div className={`p-3 mt-3 ${isSuccess ? "bg-success" : "bg-danger"} text-white`}>{message}</div>}
                         </div>
                     </div>
                     <div className='col-md-6' style={{ marginLeft: '0px' }}>

@@ -28,7 +28,9 @@ const Profile = () => {
                     description: data.description || "",
                 });
             } catch (error) {
-                console.error("Error fetching user details:", error);
+                setMessage("Error fetching user details");
+                setIsSuccess(false);
+                alertify.error(error);
             }
         };
         fetchUserDetails();

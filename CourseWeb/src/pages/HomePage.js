@@ -13,8 +13,8 @@ const HomePage = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await apiClient.get(endpoints.courses);
-                setCourses(response.data.data);
+                const response = await apiClient.get(`${endpoints.courses}/search?pageNumber=1&pageSize=3`);
+                setCourses(response.data.data.data);
             } catch (error) {
                 console.error("Error fetching courses:", error);
             }
