@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CourseApi.Messaging\CourseApi.Messaging.csproj" />
-    <ProjectReference Include="..\DataLayer\CourseApi.DataLayer.csproj" />
+    <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.3.4" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <ProjectReference Include="..\DataLayer\CourseApi.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -19,9 +19,12 @@ namespace CourseApi.DataLayer.Repositories
 	{
 		public async Task<IEnumerable<GetCourseListDto>> GetCourses(SearchCourseRequest searchParams)
 		{
-			var keyword = searchParams.Keyword.Trim().ToLower();
-			var query = _dbContext.Courses.Include(x => x.Instructor)
-				.Where(x => x.Title.ToLower().Contains(keyword));
+			var query = _dbContext.Courses.Include(x => x.Instructor).AsQueryable();
+			if (!string.IsNullOrWhiteSpace(searchParams.Keyword))
+			{
+				var keyword = searchParams.Keyword.Trim().ToLower();
+				query = query.Where(x => x.Title.ToLower().Contains(keyword));
+			}
 
 			if (searchParams.PageNumber.HasValue && searchParams.PageSize.HasValue)
 			{

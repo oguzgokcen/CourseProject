@@ -19,11 +19,8 @@ namespace CourseApi.DataLayer.Repositories
 			var boughtCourses = await _dbContext.BoughtCourses.Where(x =>
 				x.UserId == paymentLogDto.UserId && paymentLogDto.BoughtCourseIds.Contains(x.CourseId)).ToListAsync();
 
-			var paymentLogId = Guid.NewGuid();
-
 			var paymentLog = new PaymentLog
 			{
-				Id = paymentLogId,
 				UserId = paymentLogDto.UserId,
 				TotalPrice = paymentLogDto.TotalPrice,
 				PaymentStatus = paymentLogDto.PaymentStatus,
@@ -33,8 +30,10 @@ namespace CourseApi.DataLayer.Repositories
 			await _dbContext.PaymentLog.AddAsync(paymentLog);
 			foreach (var course in boughtCourses)
 			{
-				course.PaymentLogId = paymentLogId;
+				course.PaymentLog = paymentLog;
 			}
+
+			_dbContext.BoughtCourses.UpdateRange(boughtCourses);
 		}
 	}
 }

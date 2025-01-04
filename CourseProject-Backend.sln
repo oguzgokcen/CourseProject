@@ -9,6 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseApi.Service", "Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseApi.DataLayer", "DataLayer\CourseApi.DataLayer.csproj", "{6692F7D0-05E3-44D4-927B-1011FDFD3C61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseApi.Messaging", "CourseApi.Messaging\CourseApi.Messaging.csproj", "{69EC443C-88FF-4211-8E20-7674CD711AE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{223255D5-4648-455E-B30A-FBC0A45D7FCC}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +34,10 @@ Global
 		{6692F7D0-05E3-44D4-927B-1011FDFD3C61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6692F7D0-05E3-44D4-927B-1011FDFD3C61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6692F7D0-05E3-44D4-927B-1011FDFD3C61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69EC443C-88FF-4211-8E20-7674CD711AE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69EC443C-88FF-4211-8E20-7674CD711AE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69EC443C-88FF-4211-8E20-7674CD711AE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69EC443C-88FF-4211-8E20-7674CD711AE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

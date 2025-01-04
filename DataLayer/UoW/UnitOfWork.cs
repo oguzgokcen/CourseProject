@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using CourseApi.DataLayer.DataContext;
+using CourseApi.DataLayer.UoW;
 
-namespace CourseApi.Service.UoW
+namespace CourseApi.DataLayer.UoW
 {
     public class UnitOfWork(CourseDbContext _dbContext) : IUnitOfWork
     {

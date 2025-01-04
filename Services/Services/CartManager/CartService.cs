@@ -9,7 +9,7 @@ using CourseApi.DataLayer.Repositories;
 using CourseApi.DataLayer.ServiceDto_s.Responses;
 using CourseApi.DataLayer.ServiceDto_s.Responses.Cart;
 using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
-using CourseApi.Service.UoW;
+using CourseApi.DataLayer.UoW;
 
 namespace CourseApi.Service.Services.CartManager
 {

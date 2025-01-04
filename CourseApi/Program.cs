@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
-using CourseApi.Service.UoW;
+using CourseApi.DataLayer.UoW;
 using FluentValidation;
 using System.Globalization;
+using MassTransit;
+using CourseApi.Messaging.Consumer;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
@@ -37,6 +39,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(opt =>
 	opt.User.RequireUniqueEmail = true;
 	opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+"; // add handler in UI?
 }).AddEntityFrameworkStores<CourseDbContext>().AddDefaultTokenProviders();
+
 builder.Services.AddAuthentication(options =>
 {
 	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,6 +56,7 @@ builder.Services.AddAuthentication(options =>
 			ClockSkew = TimeSpan.Zero
 		};
 	});
+
 if (builder.Environment.IsDevelopment())
 {
 	builder.Services.AddCors(options =>
@@ -70,13 +74,27 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 builder.Services.AddServices();
+
 builder.Services.AddValidators();
+
+builder.Services.AddMassTransit(x =>
+{
+	x.UsingRabbitMq((context, cfg) =>
+	{
+		cfg.ConfigureEndpoints(context);
+	});
+
+	x.AddConsumersFromNamespaceContaining<PaymentCreatedConsumer>();
+
+	x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(
+		"course", false));
+});
+
 ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("en");
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
 

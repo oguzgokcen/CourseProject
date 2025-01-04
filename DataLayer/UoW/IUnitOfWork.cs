@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CourseApi.Service.UoW
+namespace CourseApi.DataLayer.UoW
 {
     public interface IUnitOfWork
     {
