@@ -22,7 +22,7 @@ namespace CourseApi.Service.Validators
 			RuleFor(payment => payment.ExpirationMonth)
 				.InclusiveBetween(1, 12).WithMessage("Expiration month must be between 1 and 12.");
 
-			RuleFor(payment => payment.ExpirationYear+2000)
+			RuleFor(payment => payment.ExpirationYear)
 				.GreaterThanOrEqualTo(DateTime.Now.Year)
 				.WithMessage("Expiration year must be greater than or equal to the current year.");
 
@@ -35,11 +35,12 @@ namespace CourseApi.Service.Validators
 			RuleFor(payment => new { payment.ExpirationMonth, payment.ExpirationYear })
 				.Must(x => IsValidExpirationDate(x.ExpirationMonth, x.ExpirationYear))
 				.WithMessage("The expiration date must be in the future.");
+
 		}
 		private bool IsValidExpirationDate(int month, int year)
 		{
 			var now = DateTime.Now;
-			var expirationDate = new DateTime(year+2000, month, DateTime.DaysInMonth(year, month));
+			var expirationDate = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 			return expirationDate > now;
 		}
 	}

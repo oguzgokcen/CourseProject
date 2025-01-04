@@ -14,7 +14,7 @@ namespace CourseApi.Service.Services.UserManager
 	public interface IUserService
 	{
 		Task<BaseApiResponse<string>> UserLogin(LoginRequest loginRequest);
-		Task<BaseApiResponse<string>> UserRegister(RegisterRequest registerRequest);
+		Task<BaseApiResponse<RegisterResponse>> UserRegister(RegisterRequest registerRequest);
 		Task<BaseApiResponse<UserDetailDto>> GetUserProfileById(string id);
 		Task<BaseApiResponse<string>> UpdateUserProfile(UpdateUserDetailDto userDetailDto, string userId);
 		Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetUserCourses(Guid userId);

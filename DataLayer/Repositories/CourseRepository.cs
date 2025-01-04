@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,13 +19,16 @@ namespace CourseApi.DataLayer.Repositories
 	{
 		public async Task<IEnumerable<GetCourseListDto>> GetCourses(SearchCourseRequest searchParams)
 		{
-			var query = _dbContext.Courses.Include(x=> x.Instructor)
-				.Where(x => x.Title.ToLower().Contains(searchParams.Keyword.ToLower()));
+			var keyword = searchParams.Keyword.Trim().ToLower();
+			var query = _dbContext.Courses.Include(x => x.Instructor)
+				.Where(x => x.Title.ToLower().Contains(keyword));
 
-			if(searchParams.PageNumber.HasValue && searchParams.PageSize.HasValue)
+			if (searchParams.PageNumber.HasValue && searchParams.PageSize.HasValue)
 			{
-				query = query.Skip(searchParams.PageNumber.Value).Take(searchParams.PageSize.Value);
+				query = query.Skip((searchParams.PageNumber.Value - 1) * searchParams.PageSize.Value)
+							 .Take(searchParams.PageSize.Value);
 			}
+
 			return await query.ProjectTo<GetCourseListDto>(_mapper.ConfigurationProvider).ToListAsync();
 		}
 
@@ -48,6 +52,12 @@ namespace CourseApi.DataLayer.Repositories
 		public async Task<IEnumerable<GetCourseListDto>> GetUserCourses(Guid userId)
 		{
 			return await _dbContext.BoughtCourses.Include(x=>x.Course).ThenInclude(x=>x.Instructor).Where(x => x.UserId == userId).Select(x=>x.Course).ProjectTo<GetCourseListDto>(_mapper.ConfigurationProvider).ToListAsync();
+		}
+
+		public async Task<DateTime?> CheckIfCourseIsBought(int courseId, Guid userId)
+		{
+			return await _dbContext.BoughtCourses
+				.Where(x => x.UserId == userId && x.CourseId == courseId).Select(x=>x.BoughtDate).FirstOrDefaultAsync();
 		}
 
 	}

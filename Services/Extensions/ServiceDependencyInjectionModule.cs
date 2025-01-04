@@ -22,6 +22,7 @@ namespace CourseApi.Service.Extensions
 			#region repositories
 			services.AddScoped<ICourseRepository, CourseRepository>();
 			services.AddScoped<ICartRepository,CartRepository>();
+			services.AddScoped<IPaymentRepository, PaymentRepository>();
 			#endregion
 			#region services
 			services.AddScoped<ICourseService, CourseService>();

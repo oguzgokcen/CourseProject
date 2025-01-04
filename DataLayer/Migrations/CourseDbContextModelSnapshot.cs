@@ -34,7 +34,7 @@ namespace CourseApi.DataLayer.Migrations
 
                     b.HasIndex("CoursesId");
 
-                    b.ToTable("CategoryKeywordsCourse");
+                    b.ToTable("CategoryKeywordsCourse", (string)null);
                 });
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.AppRole", b =>
@@ -179,7 +179,7 @@ namespace CourseApi.DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BoughtCourses");
+                    b.ToTable("BoughtCourses", (string)null);
                 });
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.CartItem", b =>
@@ -202,7 +202,7 @@ namespace CourseApi.DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.CategoryKeywords", b =>
@@ -228,7 +228,7 @@ namespace CourseApi.DataLayer.Migrations
                     b.HasIndex("SearchTerm")
                         .IsUnique();
 
-                    b.ToTable("CategoryKeywords");
+                    b.ToTable("CategoryKeywords", (string)null);
                 });
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.Course", b =>
@@ -289,7 +289,7 @@ namespace CourseApi.DataLayer.Migrations
 
                     b.HasIndex("InstructorId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("CourseApi.DataLayer.DataContext.Entities.PaymentLog", b =>
@@ -314,7 +314,7 @@ namespace CourseApi.DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PaymentLog");
+                    b.ToTable("PaymentLog", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

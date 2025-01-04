@@ -13,7 +13,7 @@ using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
 
 namespace CourseApi.Service.Services.CourseManager
 {
-	public class CourseService(ICourseRepository _courseRepository, IMapper _mapper) : ICourseService
+	public class CourseService(ICourseRepository _courseRepository,ICartRepository _cartRepository, IMapper _mapper) : ICourseService
 	{
 		public async Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetSearchedCourses(SearchCourseRequest searchCourseRequest)
 		{
@@ -35,6 +35,14 @@ namespace CourseApi.Service.Services.CourseManager
 				return BaseApiResponse<CourseDetailDto>.Error("No course has been found");
 			}
 			return BaseApiResponse<CourseDetailDto>.Success(course);
+		}
+
+		public async Task<BaseApiResponse<IsCourseBoughtDto>> CheckIfCourseIsBought(int courseId, Guid userId)
+		{
+			var boughtCourseTime = await _courseRepository.CheckIfCourseIsBought(courseId, userId);
+			var isOnCart = await _cartRepository.IsCourseExistsInUserCart(courseId, userId);
+			return BaseApiResponse<IsCourseBoughtDto>.Success(new IsCourseBoughtDto(boughtCourseTime.HasValue,isOnCart,boughtCourseTime));
+
 		}
 
 	}

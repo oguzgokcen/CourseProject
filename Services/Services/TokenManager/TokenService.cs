@@ -42,8 +42,8 @@ namespace CourseApi.Service.Services.TokenManager
 			};
 
 			claims.AddRange(audiences.Select(audience => new Claim(JwtRegisteredClaimNames.Aud, audience)));
-			//(appRoles != null && 
-			if (appRoles.Any())
+
+			if (appRoles != null && appRoles.Any())
 			{
 				claims.AddRange(appRoles.Select(appRole => new Claim(ClaimTypes.Role, appRole)));
 			}

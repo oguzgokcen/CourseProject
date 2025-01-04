@@ -17,6 +17,7 @@ namespace CourseApi.DataLayer.DataContext
 		public DbSet<CategoryKeywords> CategoryKeywords { get; set; }
 		public DbSet<BoughtCourse> BoughtCourses { get; set; }
 		public DbSet<CartItem> CartItems { get; set; }
+		public DbSet<PaymentLog> PaymentLog { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

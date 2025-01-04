@@ -37,7 +37,7 @@ namespace CourseApi.Service.Services.UserManager
 			return BaseApiResponse<string>.Success(token);
 		}
 
-		public async Task<BaseApiResponse<string>> UserRegister(RegisterRequest registerRequest)
+		public async Task<BaseApiResponse<RegisterResponse>> UserRegister(RegisterRequest registerRequest)
 		{
 			var user = new AppUser
 			{
@@ -48,9 +48,14 @@ namespace CourseApi.Service.Services.UserManager
 			var result = await _userManager.CreateAsync(user, registerRequest.Password);
 			if (!result.Succeeded)
 			{
-				return BaseApiResponse<string>.Error(result.Errors.First().Description);
+				return BaseApiResponse<RegisterResponse>.Error(result.Errors.First().Description);
 			}
-			return BaseApiResponse<string>.Success("User successfully created");
+
+			var registeredUser = await _userManager.FindByEmailAsync(registerRequest.Email);
+
+			var token = _tokenService.GenerateToken(registeredUser, null);
+
+			return BaseApiResponse<RegisterResponse>.Success(new RegisterResponse("You have successfully signed up. Redirecting ... ",token));
 		}
 
 		public async Task<BaseApiResponse<UserDetailDto>> GetUserProfileById(string id)

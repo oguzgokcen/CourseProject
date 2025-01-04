@@ -29,11 +29,11 @@ builder.Services.AddDbContext<CourseDbContext>(options =>
 
 builder.Services.AddIdentity<AppUser, AppRole>(opt =>
 {
-	opt.Password.RequireDigit = false;
-	opt.Password.RequireLowercase = false;
-	opt.Password.RequireUppercase = false;
-	opt.Password.RequireNonAlphanumeric = false;
-	opt.Password.RequiredLength = 6;
+	opt.Password.RequireDigit = true;
+	opt.Password.RequireLowercase = true;
+	opt.Password.RequireUppercase = true;
+	opt.Password.RequireNonAlphanumeric = true;
+	opt.Password.RequiredLength = 8;
 	opt.User.RequireUniqueEmail = true;
 	opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+"; // add handler in UI?
 }).AddEntityFrameworkStores<CourseDbContext>().AddDefaultTokenProviders();
