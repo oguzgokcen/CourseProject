@@ -1,12 +1,13 @@
 ﻿using CourseApi.DataLayer.ServiceDto_s.Requests;
 using CourseApi.DataLayer.ServiceDto_s.Requests.Course;
+using CourseApi.Service.Services.CategoryManager;
 using CourseApi.Service.Services.CourseManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseApi.Controllers
 {
-	public class CourseController(ICourseService _courseService) : BaseApiController
+	public class CourseController(ICourseService _courseService,ICategoryService _categoryService) : BaseApiController
 	{
 		[HttpGet("search")]
 		public async Task<IActionResult> GetCourses([FromQuery] SearchCourseRequest searchCourseRequest)
@@ -23,9 +24,6 @@ namespace CourseApi.Controllers
 			return ActionResultInstance(result);
 		}
 
-
-
-
 		[HttpGet("checkifbought/{id}")]
 		[Authorize]
 		public async Task<IActionResult> CheckIfCourseIsBought(int id)
@@ -33,6 +31,21 @@ namespace CourseApi.Controllers
 			var response = await _courseService.CheckIfCourseIsBought(id, UserId!.Value);
 			return ActionResultInstance(response);
 		}
+
+		[HttpGet("category")]
+		public async Task<IActionResult> GetCategoryCourses([FromQuery] SearchCourseByCategory searchParams)
+		{
+			var response = await _categoryService.GetCategoryCourses(searchParams);
+			return ActionResultInstance(response);
+		}
+
+		[HttpGet("categories")]
+		public async Task<IActionResult> GetAllKeywords()
+		{
+			var response = await _categoryService.GetAllKeywords();
+			return ActionResultInstance(response);
+		}
+
 	}
 }
 

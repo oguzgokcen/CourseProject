@@ -4,14 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CourseApi.DataLayer.Enums
+namespace CourseApi.DataLayer.ServiceDto_s.Responses
 {
-	public enum Language 
-	{
-		Turkish,
-		English,
-		German,
-		Spanish,
-		French
-	}
+	public record PaginatedResult(Object Data, int TotalCount);
 }

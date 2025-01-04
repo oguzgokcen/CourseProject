@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CourseApi.Service.Services.CartManager;
+using CourseApi.Service.Services.CategoryManager;
 using CourseApi.Service.Services.PaymentManager;
 
 namespace CourseApi.Service.Extensions
@@ -23,6 +24,7 @@ namespace CourseApi.Service.Extensions
 			services.AddScoped<ICourseRepository, CourseRepository>();
 			services.AddScoped<ICartRepository,CartRepository>();
 			services.AddScoped<IPaymentRepository, PaymentRepository>();
+			services.AddScoped<ICategoryRepository, CategoryRepository>();
 			#endregion
 			#region services
 			services.AddScoped<ICourseService, CourseService>();
@@ -30,6 +32,7 @@ namespace CourseApi.Service.Extensions
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddScoped<ICartService, CartService>();
 			services.AddScoped<IPaymentService, PaymentService>();
+			services.AddScoped<ICategoryService, CategoryService>();
 			#endregion
 			return services;
 

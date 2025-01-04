@@ -7,5 +7,11 @@ using CourseApi.DataLayer.Enums;
 
 namespace CourseApi.DataLayer.ServiceDto_s.Requests.Course
 {
-	public record SearchCourseRequest(int? PageNumber, int? PageSize, string? Keyword = "", double? MinRating = null, Language? Language = null);
+	public record SearchCourseByCategory
+(string SearchTerm,
+	double? MinRating,
+	int? PageSize,
+	int? PageNumber,
+	Language? Language
+	);
 }

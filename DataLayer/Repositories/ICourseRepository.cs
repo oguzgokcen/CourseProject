@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
+using CourseApi.DataLayer.ServiceDto_s.Responses;
 
 namespace CourseApi.DataLayer.Repositories
 {
 	public interface ICourseRepository
 	{
-		Task<IEnumerable<GetCourseListDto>> GetCourses(SearchCourseRequest searchParams);
+		Task<PaginatedResult> GetCourses(SearchCourseRequest searchParams);
 		Task<CourseDetailDto?> GetCourseDetailById(int id);
 		Task<bool> AddCoursesToUser(IEnumerable<Course> cartCourses, Guid userId);
 		Task<IEnumerable<GetCourseListDto>> GetUserCourses(Guid userId);

@@ -26,7 +26,6 @@ namespace CourseApi.DataLayer.ServiceDto_s.Responses.Course
 
 	public record CategoryDto
 	{
-		public int Id { get; init; }
 		public string Keyword { get; init; }
 		public string SearchTerm { get; init; }
 	}

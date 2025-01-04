@@ -14,6 +14,7 @@ using FluentValidation;
 using System.Globalization;
 using MassTransit;
 using CourseApi.Messaging.Consumer;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
@@ -81,6 +82,11 @@ builder.Services.AddMassTransit(x =>
 {
 	x.UsingRabbitMq((context, cfg) =>
 	{
+		cfg.Host("localhost", "/", h =>
+		{
+			h.Username("guest");
+			h.Password("guest"); 
+		});
 		cfg.ConfigureEndpoints(context);
 	});
 

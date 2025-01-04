@@ -13,18 +13,18 @@ using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
 
 namespace CourseApi.Service.Services.CourseManager
 {
-	public class CourseService(ICourseRepository _courseRepository,ICartRepository _cartRepository, IMapper _mapper) : ICourseService
+	public class CourseService(ICourseRepository _courseRepository,ICartRepository _cartRepository) : ICourseService
 	{
-		public async Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetSearchedCourses(SearchCourseRequest searchCourseRequest)
+		public async Task<BaseApiResponse<PaginatedResult>> GetSearchedCourses(SearchCourseRequest searchCourseRequest)
 		{
 			var courses = await _courseRepository.GetCourses(searchCourseRequest);
 
-			if(!courses.Any())
+			if(courses.TotalCount == 0)
 			{
-				return BaseApiResponse<IEnumerable<GetCourseListDto>>.Error("No course has been found for given parameters.");
+				return BaseApiResponse<PaginatedResult>.Error("No course has been found for given parameters.");
 			}
 
-			return BaseApiResponse<IEnumerable<GetCourseListDto>>.Success(courses);
+			return BaseApiResponse<PaginatedResult>.Success(courses);
 		}
 
 		public async Task<BaseApiResponse<CourseDetailDto>> GetCourseDetailById(int id)

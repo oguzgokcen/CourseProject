@@ -12,7 +12,7 @@ namespace CourseApi.Service.Services.CourseManager
 {
 	public interface ICourseService
 	{
-		Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetSearchedCourses(SearchCourseRequest searchCourseRequest);
+		Task<BaseApiResponse<PaginatedResult>> GetSearchedCourses(SearchCourseRequest searchCourseRequest);
 		Task<BaseApiResponse<CourseDetailDto>> GetCourseDetailById(int id);
 		Task<BaseApiResponse<IsCourseBoughtDto>> CheckIfCourseIsBought(int courseId, Guid userId);
 	}

@@ -44,8 +44,14 @@ namespace CourseApi.Service.Services.PaymentManager
 
 			await _unitOfWork.SaveChangesAsync();
 
-			await _publishEndpoint.Publish(new PaymentLogDto(userId, totalPrice, PaymentStatus.Completed,
-				cartCourses.Select(x => x.Id).ToList()));
+			try
+			{
+				await _publishEndpoint.Publish(new PaymentLogDto(userId, totalPrice, PaymentStatus.Completed,
+					cartCourses.Select(x => x.Id).ToList()));
+			}catch(Exception ex)
+			{
+				Console.WriteLine("Hata" + ex.Message);
+			}
 			Console.WriteLine("Continue task");
 
 			return BaseApiResponse<bool>.Success(true);

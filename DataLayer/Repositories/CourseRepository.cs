@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CourseApi.DataLayer.ServiceDto_s.Responses;
 using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
 using Microsoft.AspNetCore.Identity;
 
@@ -17,7 +18,7 @@ namespace CourseApi.DataLayer.Repositories
 {
 	public class CourseRepository(CourseDbContext _dbContext,UserManager<AppUser> _userManager,IMapper _mapper) : ICourseRepository
 	{
-		public async Task<IEnumerable<GetCourseListDto>> GetCourses(SearchCourseRequest searchParams)
+		public async Task<PaginatedResult> GetCourses(SearchCourseRequest searchParams)
 		{
 			var query = _dbContext.Courses.Include(x => x.Instructor).AsQueryable();
 			if (!string.IsNullOrWhiteSpace(searchParams.Keyword))
@@ -26,13 +27,27 @@ namespace CourseApi.DataLayer.Repositories
 				query = query.Where(x => x.Title.ToLower().Contains(keyword));
 			}
 
+			if (searchParams.MinRating.HasValue)
+			{
+				query = query.Where(x => x.Rating >= searchParams.MinRating.Value);
+			}
+
+			if (searchParams.Language.HasValue)
+			{
+				query = query.Where(x => x.Language == searchParams.Language.Value);
+			}
+
+			var totalCountTask =await query.CountAsync();
+
 			if (searchParams.PageNumber.HasValue && searchParams.PageSize.HasValue)
 			{
 				query = query.Skip((searchParams.PageNumber.Value - 1) * searchParams.PageSize.Value)
-							 .Take(searchParams.PageSize.Value);
+					.Take(searchParams.PageSize.Value);
 			}
 
-			return await query.ProjectTo<GetCourseListDto>(_mapper.ConfigurationProvider).ToListAsync();
+			var resultTask =await query.ProjectTo<GetCourseListDto>(_mapper.ConfigurationProvider).ToListAsync();
+
+			return new PaginatedResult(resultTask, totalCountTask);
 		}
 
 		public async Task<CourseDetailDto?> GetCourseDetailById(int id)
