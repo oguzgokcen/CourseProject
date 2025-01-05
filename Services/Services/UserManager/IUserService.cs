@@ -1,5 +1,6 @@
 ﻿using CourseApi.DataLayer.DataContext.Entities;
 using CourseApi.DataLayer.ServiceDto_s.Requests;
+using CourseApi.DataLayer.ServiceDto_s.Requests.Login;
 using CourseApi.DataLayer.ServiceDto_s.Responses;
 using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
 using CourseApi.DataLayer.ServiceDto_s.Responses.User;
@@ -13,10 +14,11 @@ namespace CourseApi.Service.Services.UserManager
 {
 	public interface IUserService
 	{
-		Task<BaseApiResponse<string>> UserLogin(LoginRequest loginRequest);
-		Task<BaseApiResponse<RegisterResponse>> UserRegister(RegisterRequest registerRequest);
+		Task<BaseApiResponse<TokenDto>> UserLogin(LoginRequest loginRequest);
+		Task<BaseApiResponse<TokenDto>> UserRegister(RegisterRequest registerRequest);
 		Task<BaseApiResponse<UserDetailDto>> GetUserProfileById(string id);
 		Task<BaseApiResponse<string>> UpdateUserProfile(UpdateUserDetailDto userDetailDto, string userId);
 		Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetUserCourses(Guid userId);
+		Task<BaseApiResponse<TokenDto>> RefreshAcessToken(RefreshTokenRequest refreshTokenRequest);
 	}
 }

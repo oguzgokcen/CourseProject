@@ -19,7 +19,7 @@ namespace CourseApi.DataLayer.DataContext
 		public DbSet<BoughtCourse> BoughtCourses { get; set; }
 		public DbSet<CartItem> CartItems { get; set; }
 		public DbSet<PaymentLog> PaymentLog { get; set; }
-
+		public DbSet<RefreshToken> RefreshTokens { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -152,6 +152,21 @@ namespace CourseApi.DataLayer.DataContext
 					.WithOne(pi => pi.PaymentLog)
 					.HasForeignKey(pi => pi.PaymentLogId)
 					.OnDelete(DeleteBehavior.NoAction);
+			});
+
+			modelBuilder.Entity<RefreshToken>(entity =>
+			{
+				entity.HasKey(rt => rt.Id);
+
+				entity.Property(rt => rt.Token)
+					.IsRequired()
+					.HasMaxLength(200);
+
+				entity.HasIndex(rt => rt.Token).IsUnique();
+
+				entity.HasOne(rt => rt.User)
+					.WithMany()
+					.HasForeignKey(rt => rt.UserId);
 			});
 
 			modelBuilder.AddInboxStateEntity();

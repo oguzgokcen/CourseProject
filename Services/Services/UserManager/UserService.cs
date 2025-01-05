@@ -6,39 +6,48 @@ using Microsoft.AspNetCore.Identity;
 using System.Net;
 using AutoMapper;
 using CourseApi.DataLayer.Repositories;
+using CourseApi.DataLayer.ServiceDto_s.Requests.Login;
 using CourseApi.DataLayer.ServiceDto_s.Responses.Course;
 using CourseApi.DataLayer.ServiceDto_s.Responses.User;
+using FluentValidation;
 
 namespace CourseApi.Service.Services.UserManager
 {
-	public class UserService(UserManager<AppUser> _userManager, RoleManager<AppRole> _roleManager, ITokenService _tokenService,ICourseRepository _courseRepository, IMapper _mapper) : IUserService
+	public class UserService(UserManager<AppUser> _userManager, ITokenService _tokenService,ICourseRepository _courseRepository, IValidator<RegisterRequest> _userValidator, IMapper _mapper) : IUserService
 	{
 
-		public async Task<BaseApiResponse<string>> UserLogin(LoginRequest loginRequest)
+		public async Task<BaseApiResponse<TokenDto>> UserLogin(LoginRequest loginRequest)
 		{
 			var user = await _userManager.FindByEmailAsync(loginRequest.Email);
 
 			if (user == null)
 			{
-				return BaseApiResponse<string>.Error("User not found");
+				return BaseApiResponse<TokenDto>.Error("User not found");
 			}
 
 			var result = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
 
 			if (!result)
 			{
-				return BaseApiResponse<string>.Error("Invalid password");
+				return BaseApiResponse<TokenDto>.Error("Invalid password");
 			}
 
 			var roles = await _userManager.GetRolesAsync(user);
 
-			var token = _tokenService.GenerateToken(user, roles);
+			var token = _tokenService.GenerateAccessToken(user, roles);
 
-			return BaseApiResponse<string>.Success(token);
+			var refreshToken = _tokenService.GenerateRefreshToken(user);
+
+			return BaseApiResponse<TokenDto>.Success(new TokenDto(token,refreshToken));
 		}
 
-		public async Task<BaseApiResponse<RegisterResponse>> UserRegister(RegisterRequest registerRequest)
+		public async Task<BaseApiResponse<TokenDto>> UserRegister(RegisterRequest registerRequest)
 		{
+			var validationResult = await _userValidator.ValidateAsync(registerRequest);
+			if (!validationResult.IsValid)
+			{
+				return BaseApiResponse<TokenDto>.Error(validationResult.Errors.First().ErrorMessage);
+			}
 			var user = new AppUser
 			{
 				Email = registerRequest.Email,
@@ -48,14 +57,27 @@ namespace CourseApi.Service.Services.UserManager
 			var result = await _userManager.CreateAsync(user, registerRequest.Password);
 			if (!result.Succeeded)
 			{
-				return BaseApiResponse<RegisterResponse>.Error(result.Errors.First().Description);
+				return BaseApiResponse<TokenDto>.Error(result.Errors.First().Description);
 			}
 
 			var registeredUser = await _userManager.FindByEmailAsync(registerRequest.Email);
 
-			var token = _tokenService.GenerateToken(registeredUser, null);
+			var token = _tokenService.GenerateAccessToken(registeredUser, null);
 
-			return BaseApiResponse<RegisterResponse>.Success(new RegisterResponse("You have successfully signed up. Redirecting ... ",token));
+			var refreshToken = _tokenService.GenerateRefreshToken(user);
+
+			return BaseApiResponse<TokenDto>.Success(new TokenDto(token, refreshToken),(int)HttpStatusCode.Created);
+		}
+
+		public async Task<BaseApiResponse<TokenDto>> RefreshAcessToken(RefreshTokenRequest refreshTokenRequest)
+		{
+			var token = await _tokenService.RefreshAcessToken(refreshTokenRequest);
+			if (token is null)
+			{
+				return BaseApiResponse<TokenDto>.Error("The refresh token is expired.");
+			}
+
+			return BaseApiResponse<TokenDto>.Success(token);
 		}
 
 		public async Task<BaseApiResponse<UserDetailDto>> GetUserProfileById(string id)

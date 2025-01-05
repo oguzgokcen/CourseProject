@@ -1,4 +1,5 @@
 ﻿using CourseApi.DataLayer.ServiceDto_s.Requests;
+using CourseApi.DataLayer.ServiceDto_s.Requests.Login;
 using CourseApi.Service.Services.UserManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +25,11 @@ namespace CourseApi.Controllers
 			return ActionResultInstance(result);
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> Index()
+		[HttpPost("GetAccessToken")]
+		public async Task<IActionResult> GetAccessTokenFromRefreshToken(RefreshTokenRequest refreshTokenRequest)
 		{
-			// todo add teacher role.
-			return Ok("Welcome to CourseApi");
+			var result = await _userService.RefreshAcessToken(refreshTokenRequest);
+			return ActionResultInstance(result);
 		}
 	}
 }

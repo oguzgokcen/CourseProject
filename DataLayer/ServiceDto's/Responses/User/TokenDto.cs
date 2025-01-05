@@ -6,6 +6,5 @@ using System.Threading.Tasks;
 
 namespace CourseApi.DataLayer.ServiceDto_s.Responses.User
 {
-	public record RegisterResponse(string Message, string AccessToken,string RefreshToken);
-
+	public record TokenDto(string AccessToken, string RefreshToken);
 }

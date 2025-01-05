@@ -4,12 +4,19 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using CourseApi.DataLayer.DataContext;
+using CourseApi.DataLayer.ServiceDto_s.Requests.Login;
+using CourseApi.DataLayer.ServiceDto_s.Responses.User;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+
 namespace CourseApi.Service.Services.TokenManager
 {
-	public class TokenService(IOptions<TokenOption> _tokenOptions) : ITokenService
+	public class TokenService(IOptions<TokenOption> _tokenOptions,CourseDbContext _dbContext, UserManager<AppUser> _userManager) : ITokenService
 	{
-		public string GenerateToken(AppUser appUser, IEnumerable<string>? roles)
+		public string GenerateAccessToken(AppUser appUser, IEnumerable<string>? roles)
 		{
 			var accessTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenOptions.Value.AccessTokenExpiration);
 
@@ -27,9 +34,49 @@ namespace CourseApi.Service.Services.TokenManager
 
 			var handler = new JsonWebTokenHandler();
 
-			string token = handler.CreateToken(tokenDescriptor);
+			string accessToken = handler.CreateToken(tokenDescriptor);
 
-			return token;
+			return accessToken;
+		}
+
+		public async Task<TokenDto?> RefreshAcessToken(RefreshTokenRequest refreshTokenRequest)
+		{
+			var refreshToken = await _dbContext.RefreshTokens.Include(x => x.User)
+				.FirstOrDefaultAsync(r => r.Token == refreshTokenRequest.refreshToken);
+
+			if (refreshToken is null || refreshToken.ExpiresOnUtc < DateTime.UtcNow)
+			{
+				return null;
+			}
+
+			var roles = await _userManager.GetRolesAsync(refreshToken.User);
+
+			var accessToken =GenerateAccessToken(refreshToken.User, roles);
+
+			refreshToken.ExpiresOnUtc = DateTime.UtcNow.AddMinutes(_tokenOptions.Value.RefreshTokenExpiration);
+
+			await _dbContext.SaveChangesAsync();
+
+			return new TokenDto(accessToken, refreshToken.Token);
+		}
+
+		public string GenerateRefreshToken(AppUser user)
+		{
+			var refreshTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenOptions.Value.RefreshTokenExpiration);
+
+			var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+
+			_dbContext.RefreshTokens.Add(new RefreshToken
+			{
+				Id = Guid.NewGuid(),
+				UserId = user.Id,
+				Token = refreshToken,
+				ExpiresOnUtc = refreshTokenExpiration
+			});
+
+			_dbContext.SaveChangesAsync();
+
+			return refreshToken;
 		}
 
 		private IEnumerable<Claim> GetClaims(AppUser appUser,List<string> audiences, IEnumerable<string>? appRoles)
