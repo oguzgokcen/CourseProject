@@ -2,7 +2,7 @@ import axios from "axios";
 import { endpoints } from "./endpoints";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:7001/api/v1",
+  baseURL: endpoints.baseUrl,
   headers: {
     "Content-type": "application/json;",
     "Accept": "application/json",
@@ -45,7 +45,7 @@ apiClient.interceptors.response.use(
         }
 
         try {
-          const response = await axios.post('http://localhost:7001/api/v1/login/GetAccessToken', {
+          const response = await axios.post(endpoints.baseUrl + endpoints.getAccessToken, {
             "refreshToken": refreshToken,
           });
           const { accessToken, refreshToken: newRefreshToken } = response.data.data;

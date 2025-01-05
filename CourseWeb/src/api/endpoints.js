@@ -1,4 +1,5 @@
 export const endpoints = {
+    baseUrl: "http://localhost:7001/api/v1",
     courses: "/course",
     users: "/user",
     comments: "/comment",
@@ -12,4 +13,5 @@ export const endpoints = {
     signup: "/login/register",
     category: '/course/category',
     getAllCategory: '/course/categories',
+    getAccessToken: '/login/GetAccessToken',
 };
