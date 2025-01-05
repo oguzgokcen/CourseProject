@@ -38,6 +38,8 @@ export default function Navbar() {
         setSearchQuery('');
     };
 
+    const isTeacher = user && user.role === 'Teacher';
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -95,6 +97,13 @@ export default function Navbar() {
                                     My Learning
                                 </a>
                             </li>
+                            {isTeacher && (
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/teacher">
+                                        My Courses
+                                    </a>
+                                </li>
+                            )}
                             <li className="nav-item">
                                 <a className="nav-link" href="/cart" style={{display: "flex", gap: "5px", alignItems: "center", position: "relative" }}>
                                     My Cart

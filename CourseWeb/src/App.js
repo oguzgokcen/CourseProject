@@ -14,6 +14,9 @@ import MyLearning from './pages/MyLearning';
 import Search from './pages/Search';
 import SignUp from './pages/SignUp';
 import Category from './pages/Category';
+import Unauthorized from './pages/Unauthorized';
+import TeacherProtectedRoute from './components/TeacherProtectedRoute';
+import TeacherPage from './pages/TeacherPage';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -33,6 +36,8 @@ function App() {
         <Route path="/search" element={<Search/>}></Route>
         <Route path="/category/:keyword" element={<Category/>}></Route>
         <Route path="/notfound" element={<NotFound/>}></Route>
+        <Route path="/unauthorized" element={<Unauthorized/>}></Route>
+        <Route path="/teacher" element={<TeacherProtectedRoute><TeacherPage/></TeacherProtectedRoute>}></Route>
         <Route path="*" element={<NotFound/>}></Route>
         </Routes>
       </CartProvider>

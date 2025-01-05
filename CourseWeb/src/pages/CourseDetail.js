@@ -139,19 +139,36 @@ const CourseDetail = () => {
                 </div>
             </div>
             <div className="container" style={styles.courseDetailBody}>
-                <h2>İlgili konular</h2>
+                <h2>Keywords</h2>
                 <CategoryKeywords categories={course.categories} /> 
 
-                <h2>Açıklama</h2>
+                <h2>Description</h2>
                 <p>{course.description}</p>
 
                 <h2>Teacher</h2>
-                <p>{course.instructor.fullName}</p>
-
-                <h2>Teacher's Other Courses</h2>
-                <div style={styles.teacherCourses}>
-                    todo
+                <div style={styles.instructorSection}>
+                    <h3>{course.instructor.fullName}</h3>
+                    <div style={styles.instructorStats}>
+                        <p>
+                            <span style={styles.statIcon}>👥</span> 
+                            {course.instructor.studentCount} student
+                        </p>
+                        <p>
+                            <span style={styles.statIcon}>📚</span> 
+                            {course.instructor.courseCount} kurs
+                        </p>
+                    </div>
+                    <div style={styles.instructorDescription}>
+                        <p>{course.instructor.description}</p>
+                    </div>
+                    <div style={styles.instructorContact}>
+                        <p>
+                            <span style={styles.statIcon}>✉️</span> 
+                            {course.instructor.email}
+                        </p>
+                    </div>
                 </div>
+
             </div>
         </>
     );
@@ -226,6 +243,33 @@ const styles = {
         flexDirection: 'column',
         gap: '10px',
     },
+    instructorSection: {
+        backgroundColor: '#f7f9fa',
+        padding: '20px',
+        borderRadius: '8px',
+        marginTop: '20px',
+        marginBottom: '30px'
+    },
+    instructorStats: {
+        display: 'flex',
+        gap: '20px',
+        marginTop: '10px',
+        color: '#6a6f73',
+        fontSize: '14px'
+    },
+    instructorDescription: {
+        marginTop: '15px',
+        lineHeight: '1.6',
+        color: '#1c1d1f'
+    },
+    instructorContact: {
+        marginTop: '15px',
+        color: '#6a6f73',
+        fontSize: '14px'
+    },
+    statIcon: {
+        marginRight: '8px'
+    }
 };
 
 export default CourseDetail;

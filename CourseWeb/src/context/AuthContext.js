@@ -10,7 +10,14 @@ export const AuthProvider = ({children}) => {
 
     const [user, setUser] = useState(() => {
         const storedUser = localStorage.getItem("user");
-        return storedUser ? JSON.parse(storedUser) : null;
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            return {
+                ...parsedUser,
+                role: parsedUser['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+            };
+        }
+        return null;
     });
     const navigate = useNavigate();
 
@@ -18,8 +25,12 @@ export const AuthProvider = ({children}) => {
         if(token){
             localStorage.setItem("token", token.accessToken);
             const decoded = jwtDecode(token.accessToken);
+            const userWithRole = {
+                ...decoded,
+                role: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+            };
             localStorage.setItem("user", JSON.stringify(decoded));
-            setUser(decoded);
+            setUser(userWithRole);
             localStorage.setItem("refreshToken", token.refreshToken);
         }
     }
