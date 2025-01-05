@@ -16,16 +16,18 @@ export const AuthProvider = ({children}) => {
 
     const login = (token) => {
         if(token){
-            localStorage.setItem("token", token);
-            const decoded = jwtDecode(token);
+            localStorage.setItem("token", token.accessToken);
+            const decoded = jwtDecode(token.accessToken);
             localStorage.setItem("user", JSON.stringify(decoded));
             setUser(decoded);
+            localStorage.setItem("refreshToken", token.refreshToken);
         }
     }
 
     const logout = () => {
         setUser(null);
         localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         localStorage.removeItem("user");
         navigate("/login");
     }

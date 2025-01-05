@@ -30,10 +30,10 @@ export default function SignUp() {
     const register = async (userDetails) => {
         try {
             const response = await apiClient.post(endpoints.signup, userDetails);
-            setMessage(response.data.data.message);
+            setMessage("Sign up successfull redirecting ...");
             setIsSuccess(true);
-            login(response.data.data.token);
-            alertify.success(response.data.data.message);
+            login(response.data.data);
+            alertify.success("Sign up successfull redirecting ...");
 
             setTimeout(() => {
                 navigate("/");

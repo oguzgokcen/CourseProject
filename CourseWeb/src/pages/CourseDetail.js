@@ -108,7 +108,7 @@ const CourseDetail = () => {
                                 <p>Created by <a href="#">{course.instructor.fullName}</a></p>
                                 <p>
                                     <span>Last updated: {new Date(course.publishedDate).toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' })}</span>
-                                    <span style={styles.language}><TbWorld/> English</span>
+                                    <span style={styles.language}><TbWorld/> {course.language}</span>
                                 </p>
                             </div>
                         </div>
