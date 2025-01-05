@@ -24,8 +24,16 @@ CourseApi, kurslar, kullanıcılar ve ödemeleri yönetmek için tasarlanmış b
 - RabbitMQ
 
 
+## Örnek Kullanıcılar
 
+```bash 
+  email : user@example.com
+  şifre : Password123!
 
+  Teacher hesabı : 
+  email : teacher@example.com
+  şifre: Password123!
+```
 
 ## Yükleme 
 
