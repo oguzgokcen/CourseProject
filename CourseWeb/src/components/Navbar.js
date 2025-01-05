@@ -43,7 +43,6 @@ export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-                {/* Logo */}
                 <a className="navbar-brand" href="/">
                     Udemy
                 </a>
@@ -62,7 +61,7 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto">
                         <li className="nav-item">
-                            <Popper 
+                            <Popper
                                 trigger={
                                     <a className="nav-link" style={{ cursor: 'pointer' }}>
                                         Categories
@@ -92,74 +91,81 @@ export default function Navbar() {
                     <ul className="navbar-nav ms-auto">
                         {user ? (
                             <>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/my-learning">
-                                    My Learning
-                                </a>
-                            </li>
-                            {isTeacher && (
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/teacher">
-                                        My Courses
+                                    <a className="nav-link" href="/my-learning">
+                                        My Learning
                                     </a>
                                 </li>
-                            )}
-                            <li className="nav-item">
-                                <a className="nav-link" href="/cart" style={{display: "flex", gap: "5px", alignItems: "center", position: "relative" }}>
-                                    My Cart
-                                    <div style={{ position: "relative" }}>
-                                        <FaShoppingCart />
-                                        {user && cart.length > 0 && (
-                                            <span style={styles.cartBadge}>
-                                                {cart.length}
-                                            </span>
-                                        )}
-                                    </div>
-                                </a>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a
-                                    className="nav-link dropdown-toggle"
-                                    href="#"
-                                    id="navbarDropdown"
-                                    role="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    <FaUserCircle /> {user.name}
-                                </a>
-                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a className="dropdown-item" href="/profile">
-                                            Profile
+                                {isTeacher && (
+                                    <li className="nav-item">
+                                        <a className="nav-link" href="/teacher">
+                                            My Courses
                                         </a>
                                     </li>
-                                    <li>
-                                        <hr className="dropdown-divider" />
-                                    </li>
-                                    <li>
-                                        <button
-                                            className="dropdown-item"
-                                            onClick={() => logout()}
-                                        >
-                                            Logout
-                                        </button>
-                                    </li>
+                                )}
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/cart" style={{ display: "flex", gap: "5px", alignItems: "center", position: "relative" }}>
+                                        My Cart
+                                        <div style={{ position: "relative" }}>
+                                            <FaShoppingCart />
+                                            {user && cart.length > 0 && (
+                                                <span style={styles.cartBadge}>
+                                                    {cart.length}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </a>
+                                </li>
+                                <li className="nav-item dropdown" style={styles.dropdownContainer}>
+                                    <a
+                                        className="nav-link dropdown-toggle"
+                                        href="#"
+                                        id="navbarDropdown"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        style={styles.dropdownToggle}
+                                    >
+                                        <FaUserCircle /> {user.name}
+                                    </a>
+                                    <ul className="dropdown-menu dropdown-menu-end" style={styles.dropdownMenu} aria-labelledby="navbarDropdown">
+                                        <li>
+                                            <a className="dropdown-item" href="/profile" style={styles.dropdownItem}>
+                                                Profile
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a className="dropdown-item" href="/payment-history" style={styles.dropdownItem}>
+                                                Payment History
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <hr className="dropdown-divider" />
+                                        </li>
+                                        <li>
+                                            <button
+                                                className="dropdown-item"
+                                                onClick={() => logout()}
+                                                style={styles.dropdownItem}
+                                            >
+                                                Logout
+                                            </button>
+                                        </li>
                                     </ul>
                                 </li>
                             </>
                         ) : (
                             <>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/login">
-                                    Login
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/signup">
-                                    Sign Up
-                                </a>
-                            </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/login">
+                                        Login
+                                    </a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/signup">
+                                        Sign Up
+                                    </a>
+                                </li>
                             </>
                         )}
                     </ul>
@@ -182,5 +188,30 @@ const styles = {
         fontWeight: "bold",
         minWidth: "16px",
         textAlign: "center"
+    },
+    dropdownContainer: {
+        position: 'relative'
+    },
+    dropdownToggle: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '8px 16px',
+        whiteSpace: 'nowrap'
+    },
+    dropdownMenu: {
+        minWidth: '200px',
+        padding: '8px 0',
+        marginTop: '8px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.08)'
+    },
+    dropdownItem: {
+        padding: '8px 16px',
+        fontSize: '14px',
+        color: '#1c1d1f',
+        cursor: 'pointer',
+        ':hover': {
+            backgroundColor: '#f7f9fa'
+        }
     }
 };

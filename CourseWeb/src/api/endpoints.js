@@ -15,4 +15,5 @@ export const endpoints = {
     getAllCategory: '/course/categories',
     getAccessToken: '/login/GetAccessToken',
     teacherCourse: "/user/teacher/courses",
+    paymentHistory: "/user/payment-history",
 };

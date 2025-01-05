@@ -18,6 +18,7 @@ import Unauthorized from './pages/Unauthorized';
 import TeacherProtectedRoute from './components/TeacherProtectedRoute';
 import TeacherPage from './pages/TeacherPage';
 import { CartProvider } from './context/CartContext';
+import PaymentHistory from './pages/PaymentHistory';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/course/:courseId" element={<CourseDetail/>}></Route>
         <Route path="/checkout" element={<Checkout/>}></Route>
         <Route path="/my-learning" element={<ProtectedRoute><MyLearning/></ProtectedRoute>}></Route>
+        <Route path="/payment-history" element={<ProtectedRoute><PaymentHistory/></ProtectedRoute>}></Route>
         <Route path="/search" element={<Search/>}></Route>
         <Route path="/category/:keyword" element={<Category/>}></Route>
         <Route path="/notfound" element={<NotFound/>}></Route>
