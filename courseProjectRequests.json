@@ -1,0 +1,612 @@
+{
+	"info": {
+		"_postman_id": "5bbc0c5e-a9ac-4910-8215-c716f8912732",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26188279"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJleHAiOjE3MzYxMDI3NTUsInN1YiI6IjAzYTA5NDE3LTI4NWItNDY0NS01ODgwLTA4ZGQyZGFlMmZlMiIsImVtYWlsIjoidXNlcjlAZXhhbXBsZS5jb20iLCJuYW1lIjoiVXNlcjkiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJpYXQiOjE3MzYxMDIxNTUsIm5iZiI6MTczNjEwMjE1NX0.N_8UHlaE0BhaLgEhq3zDfvVU1vRUx1oIhdLb1sOA7zQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/home",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"home"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\": \"user@example.com\",\r\n    \"Password\": \"Password123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/Login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Access Token From Refresh Token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refreshToken\" : \"KcKIL6HkroWS5EnSOvWY/ld/KN+6E7RZMdr7zPqVgTQ=\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/Login/GetAccessToken",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Login",
+						"GetAccessToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Register",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\": \"user20@example.com\",\r\n    \"Password\": \"Password123!\",\r\n    \"FullName\": \"User2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCourses",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/course/search?keyword=prog",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"course",
+						"search"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "prog"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCourseDetail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/course/7",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"course",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserProfile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJleHAiOjE3MzYwODM4NDEsInN1YiI6IjdlMWQwOWRlLWE3ZjgtNGQ2ZC01OWIxLTA4ZGQyZDhjYzhlNiIsImVtYWlsIjoidXNlcjVAZXhhbXBsZS5jb20iLCJuYW1lIjoiVXNlcjUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJpYXQiOjE3MzYwODM3ODEsIm5iZiI6MTczNjA4Mzc4MX0.3sfoudtVCr0o0eOVhKW_Fg0cUHtNDjdCYdrr9uzEd0w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/user/profile",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJleHAiOjE3MzU4OTU3MjgsInN1YiI6ImNiOTljNWJlLTFkYTgtNGFlNC00ODY0LTA4ZGQyNzZkMTk5ZCIsImVtYWlsIjoidXNlcjJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVXNlcjIiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJpYXQiOjE3MzU2Nzk3MjgsIm5iZiI6MTczNTY3OTcyOH0.go_WVTPzwLBz6b7siNtdqgThRkLFJcAht2mN5yBUDX8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"User2\",\r\n    \"email\": \"user2@example.com\",\r\n    \"title\": \"Software Engineer\",\r\n    \"website\": \"\",\r\n    \"description\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/user/profile",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCartItems",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/cart",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add To Cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/cart/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cart",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteFromCart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/cart/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cart",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreatePayment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJleHAiOjE3MzYxMDIxMDAsInN1YiI6IjAzYTA5NDE3LTI4NWItNDY0NS01ODgwLTA4ZGQyZGFlMmZlMiIsImVtYWlsIjoidXNlcjlAZXhhbXBsZS5jb20iLCJuYW1lIjoiVXNlcjkiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJpYXQiOjE3MzYxMDE1MDAsIm5iZiI6MTczNjEwMTUwMH0.DQa4iWiV1t9-PGGWJA4jGRpUcG6PzRm6uRlA5Geg69w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"CardName\":\"Oğuz\",\r\n    \"CardNumber\":\"5526 0800 0000 0006\",\r\n    \"ExpirationMonth\":12,\r\n    \"ExpirationYear\": 25,\r\n    \"CVV\":123,\r\n    \"TotalPrice\":99.99\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/payment",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get payment",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"CardName\":\"Oğuz\",\r\n    \"CardNumber\":\"4446 7707 4212 8772\",\r\n    \"ExpirationMonth\":2,\r\n    \"ExpirationYear\": 25,\r\n    \"CVV\":123,\r\n    \"TotalPrice\":100.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/payment",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Courses",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"CardName\":\"Oğuz\",\r\n    \"CardNumber\":\"4446 7707 4212 8772\",\r\n    \"ExpirationMonth\":2,\r\n    \"ExpirationYear\": 25,\r\n    \"CVV\":123,\r\n    \"TotalPrice\":100.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/user/profile/course",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"profile",
+						"course"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Is bought",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"CardName\":\"Oğuz\",\r\n    \"CardNumber\":\"4446 7707 4212 8772\",\r\n    \"ExpirationMonth\":2,\r\n    \"ExpirationYear\": 25,\r\n    \"CVV\":123,\r\n    \"TotalPrice\":100.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/course/checkifbought/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"course",
+						"checkifbought",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/category",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Category Courses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/course/category?searchTerm=programming",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"course",
+						"category"
+					],
+					"query": [
+						{
+							"key": "searchTerm",
+							"value": "programming"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Teachers courses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJleHAiOjE3MzYwOTg0ODQsInN1YiI6ImJmNWM1ODYzLWYzMDYtNGYwMy1mYzcxLTA4ZGQyZGE2OTUwMSIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsIm5hbWUiOiJSZWd1bGFyIFVzZXIiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJpYXQiOjE3MzYwOTc4ODQsIm5iZiI6MTczNjA5Nzg4NH0.WmMKNlNqIjw1FjIjPowP09JGhJvQN9wA1ZNippMYY5s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/user/teacher/courses",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"teacher",
+						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payment History",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJleHAiOjE3MzYxMDA5NjQsInN1YiI6ImJmNWM1ODYzLWYzMDYtNGYwMy1mYzcxLTA4ZGQyZGE2OTUwMSIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsIm5hbWUiOiJSZWd1bGFyIFVzZXIiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJpYXQiOjE3MzYxMDAzNjQsIm5iZiI6MTczNjEwMDM2NH0.IbXSGGxjX75gneH5EP5Bc6n1idruep1kOo-AzsQnmwM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/user/payment-history",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"payment-history"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjcwMDEiLCJleHAiOjE3MzYyMDQzODQsInN1YiI6IjRlYzJjYjU4LTIxYWItNDYxYS03N2VjLTA4ZGQyY2FlZTVkOCIsImVtYWlsIjoib2d1ei0yMDA0QHdpbmRvd3NsaXZlLmNvbSIsIm5hbWUiOiJPxJ91eiBHw7Zrw6dlbiA1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo3MDAxIiwiaWF0IjoxNzM1OTg4Mzg0LCJuYmYiOjE3MzU5ODgzODR9.sJcRmnuB4KvLPgY_8mneoWbFE1ynrL-ueIf_2epjrWA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:7001",
+			"type": "string"
+		}
+	]
+}
