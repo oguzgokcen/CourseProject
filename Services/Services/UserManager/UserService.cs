@@ -13,7 +13,7 @@ using FluentValidation;
 
 namespace CourseApi.Service.Services.UserManager
 {
-	public class UserService(UserManager<AppUser> _userManager, ITokenService _tokenService,ICourseRepository _courseRepository, IValidator<RegisterRequest> _userValidator, IMapper _mapper) : IUserService
+	public class UserService(UserManager<AppUser> _userManager, ITokenService _tokenService,ICourseRepository _courseRepository,IPaymentRepository _paymentRepository, IValidator<RegisterRequest> _userValidator, IMapper _mapper) : IUserService
 	{
 
 		public async Task<BaseApiResponse<TokenDto>> UserLogin(LoginRequest loginRequest)
@@ -125,6 +125,12 @@ namespace CourseApi.Service.Services.UserManager
 				return BaseApiResponse<IEnumerable<GetCourseListDto>>.Error("No courses found.",(int)HttpStatusCode.NotFound);
 			}
 			return BaseApiResponse<IEnumerable<GetCourseListDto>>.Success(courses);
+		}
+
+		public async Task<BaseApiResponse<IEnumerable<PaymentHistoryDto>>> GetPaymentHistory(Guid userId)
+		{
+			var paymentLogs = await _paymentRepository.GetPaymentHistory(userId);
+			return BaseApiResponse<IEnumerable<PaymentHistoryDto>>.Success(paymentLogs);
 		}
 	}
 }

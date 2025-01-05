@@ -38,5 +38,12 @@ namespace CourseApi.Controllers
 			var courses = await _userService.GetTeachersCourses(UserId!.Value);
 			return ActionResultInstance(courses);
 		}
+
+		[HttpGet("payment-history")]
+		public async Task<IActionResult> GetPaymentHistory()
+		{
+			var paymentHistory = await _userService.GetPaymentHistory(UserId!.Value);
+			return ActionResultInstance(paymentHistory);
+		}
 	}
 }

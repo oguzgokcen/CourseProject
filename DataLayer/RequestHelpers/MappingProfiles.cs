@@ -32,6 +32,13 @@ namespace CourseApi.DataLayer.RequestHelpers
 			CreateMap<InstructorDetail, InstructorDto>()
 				.ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.InstructorUser.FullName))
 				.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.InstructorUser.Email));
+
+			CreateMap<PaymentLog, PaymentHistoryDto>();
+
+			CreateMap<BoughtCourse, PaymentHistoryItemDto>()
+				.ForMember(dest => dest.Course, opt => opt.MapFrom(src => src.Course))
+				.ForMember(dest => dest.BoughtDate, opt => opt.MapFrom(src => src.BoughtDate));
 		}
 	}
 }
+
