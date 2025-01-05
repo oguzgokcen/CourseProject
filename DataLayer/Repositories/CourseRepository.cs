@@ -78,5 +78,10 @@ namespace CourseApi.DataLayer.Repositories
 				.Where(x => x.UserId == userId && x.CourseId == courseId).Select(x=>x.BoughtDate).FirstOrDefaultAsync();
 		}
 
+		public async Task<IEnumerable<GetCourseListDto>> GetTeachersCourses(Guid teacherId)
+		{
+			return await _dbContext.Courses.Include(x => x.Instructor).Where(x => x.InstructorId == teacherId).ProjectTo<GetCourseListDto>(_mapper.ConfigurationProvider).ToListAsync();
+		}
+
 	}
 }

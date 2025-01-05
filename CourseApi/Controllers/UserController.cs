@@ -30,5 +30,13 @@ namespace CourseApi.Controllers
 			var courses = await _userService.GetUserCourses(UserId!.Value);
 			return ActionResultInstance(courses);
 		}
+
+		[HttpGet("teacher/courses")]
+		[Authorize(Roles = "Teacher")]
+		public async Task<IActionResult> GetTeachersCourses()
+		{
+			var courses = await _userService.GetTeachersCourses(UserId!.Value);
+			return ActionResultInstance(courses);
+		}
 	}
 }

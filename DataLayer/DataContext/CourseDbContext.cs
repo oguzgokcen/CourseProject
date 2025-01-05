@@ -20,6 +20,7 @@ namespace CourseApi.DataLayer.DataContext
 		public DbSet<CartItem> CartItems { get; set; }
 		public DbSet<PaymentLog> PaymentLog { get; set; }
 		public DbSet<RefreshToken> RefreshTokens { get; set; }
+		public DbSet<InstructorDetail> InstructorDetails { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -167,6 +168,17 @@ namespace CourseApi.DataLayer.DataContext
 				entity.HasOne(rt => rt.User)
 					.WithMany()
 					.HasForeignKey(rt => rt.UserId);
+			});
+
+			modelBuilder.Entity<InstructorDetail>(entity =>
+			{
+				entity.HasKey(e => e.InstructorId);
+				entity.HasOne(e => e.InstructorUser)
+					.WithOne(x => x.InstructorDetail)
+					.HasForeignKey<InstructorDetail>(x => x.InstructorId);
+
+				entity.Navigation(e => e.InstructorUser)
+					.AutoInclude();
 			});
 
 			modelBuilder.AddInboxStateEntity();

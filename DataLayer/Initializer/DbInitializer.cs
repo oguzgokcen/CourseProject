@@ -52,6 +52,19 @@ namespace CourseApi.DataLayer.Initializer
 				}
 			}
 
+			if (!context.InstructorDetails.Any())
+			{
+				var teacher = await _userManager.FindByEmailAsync("teacher@example.com");
+				var details = new InstructorDetail()
+				{
+					CourseCount = 12,
+					Description = "I am a professional software developer with over 10 years of experience. I am a passionate and creative software engineer with a strong focus on simplicity and thorough details. I have been programming since high school and I have been involved with multiple web and desktop using .net. For me, the most important part about writing and teaching code is to eliminate the hardships of every student out there who is willing to learn but cannot find adequate resource which is easy to understand. Coding is a way to be creative and have fun! ",
+					StudentCount = 3000,
+					InstructorId = teacher.Id
+				};
+				await context.InstructorDetails.AddAsync(details);
+			}
+
 			if (!context.Roles.Any())
 			{
 				var roles = new[]
@@ -80,27 +93,28 @@ namespace CourseApi.DataLayer.Initializer
 				}
 			}
 
-			if (!context.Courses.Any())
+			if (!context.CategoryKeywords.Any())
 			{
-				var teacher = await _userManager.FindByEmailAsync("teacher@example.com");
-
 				var categories = new List<CategoryKeywords>
-					{
-						new CategoryKeywords { Keyword = "Programming", SearchTerm = "programming" },
-						new CategoryKeywords { Keyword = "Business", SearchTerm = "business" },
-						new CategoryKeywords { Keyword = "Design", SearchTerm = "design" },
-						new CategoryKeywords { Keyword = "Data Science", SearchTerm = "data-science" },
-						new CategoryKeywords { Keyword = "Web Development", SearchTerm = "web-development" },
-						new CategoryKeywords { Keyword = "Machine Learning", SearchTerm = "machine-learning" }
-					};
+				{
+					new CategoryKeywords { Keyword = "Programming", SearchTerm = "programming" },
+					new CategoryKeywords { Keyword = "Business", SearchTerm = "business" },
+					new CategoryKeywords { Keyword = "Design", SearchTerm = "design" },
+					new CategoryKeywords { Keyword = "Data Science", SearchTerm = "data-science" },
+					new CategoryKeywords { Keyword = "Web Development", SearchTerm = "web-development" },
+					new CategoryKeywords { Keyword = "Machine Learning", SearchTerm = "machine-learning" }
+				};
 
 				context.CategoryKeywords.AddRange(categories);
 				await context.SaveChangesAsync();
-
+			}
+			if (!context.Courses.Any())
+			{
+				var teacher = await _userManager.FindByEmailAsync("teacher@example.com");
+				var categories = await context.CategoryKeywords.ToListAsync();
 				var courses = new List<Course>
 					{
-                        
-                        new Course
+						new Course
 						{
 							Title = "Introduction to Programming",
 							DescriptionHeader = "Learn the basics of programming",
@@ -113,7 +127,6 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "This course covers the basics of programming including variables, loops, and functions.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "programming") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 							ImageUrl = "https://img-c.udemycdn.com/course/240x135/3934228_e9fe_5.jpg"
 						},
 						new Course
@@ -129,7 +142,6 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "This course covers advanced topics in C# including LINQ, async/await, and design patterns.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "programming") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 						},
 
                         // New Courses
@@ -153,7 +165,6 @@ namespace CourseApi.DataLayer.Initializer
 								categories.First(c => c.SearchTerm == "machine-learning")
 							},
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 						},
 						new Course
 						{
@@ -172,7 +183,6 @@ namespace CourseApi.DataLayer.Initializer
 								categories.First(c => c.SearchTerm == "web-development")
 							},
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 						},
 						new Course
 						{
@@ -191,7 +201,6 @@ namespace CourseApi.DataLayer.Initializer
 								categories.First(c => c.SearchTerm == "web-development")
 							},
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 							ImageUrl = "https://img-c.udemycdn.com/course/240x135/3934228_e9fe_5.jpg"
 						},
 
@@ -209,7 +218,6 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "Learn the key components of successful business strategies.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "business") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 						},
 						new Course
 						{
@@ -224,7 +232,7 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "Understand the fundamentals of digital marketing.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "business") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
+
 						},
 						new Course
 						{
@@ -239,7 +247,7 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "A complete guide to launching and managing a successful business.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "business") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
+
 						},
 						new Course
 						{
@@ -254,7 +262,7 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "Learn how to budget, save, and invest your money wisely.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "business") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
+
 						},
 
                         // Design Courses
@@ -271,7 +279,6 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "Learn the fundamentals of UI/UX design.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "design") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 						},
 						new Course
 						{
@@ -286,7 +293,6 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "Enhance your graphic design skills with advanced tools and techniques.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "design") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 						},
 						new Course
 						{
@@ -301,7 +307,6 @@ namespace CourseApi.DataLayer.Initializer
 							Description = "Learn how to create beautiful and responsive web designs.",
 							Categories = new List<CategoryKeywords> { categories.First(c => c.SearchTerm == "design") },
 							InstructorId = teacher.Id,
-							Instructor = teacher,
 						}
 					};
 

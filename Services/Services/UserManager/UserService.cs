@@ -116,5 +116,15 @@ namespace CourseApi.Service.Services.UserManager
 		{
 			return BaseApiResponse<IEnumerable<GetCourseListDto>>.Success(await _courseRepository.GetUserCourses(userId));
 		}
+
+		public async Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetTeachersCourses(Guid teacherId)
+		{
+			var courses = await _courseRepository.GetTeachersCourses(teacherId);
+			if (courses == null)
+			{
+				return BaseApiResponse<IEnumerable<GetCourseListDto>>.Error("No courses found.",(int)HttpStatusCode.NotFound);
+			}
+			return BaseApiResponse<IEnumerable<GetCourseListDto>>.Success(courses);
+		}
 	}
 }

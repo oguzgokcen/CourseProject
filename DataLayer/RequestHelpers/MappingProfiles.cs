@@ -26,7 +26,12 @@ namespace CourseApi.DataLayer.RequestHelpers
 			CreateMap<AppUser, UserDetailDto>();
 
 			CreateMap<CategoryKeywords, CategoryDto>();
+
 			CreateMap<AppUser, InstructorDto>();
+
+			CreateMap<InstructorDetail, InstructorDto>()
+				.ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.InstructorUser.FullName))
+				.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.InstructorUser.Email));
 		}
 	}
 }

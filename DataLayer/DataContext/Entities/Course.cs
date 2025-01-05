@@ -24,6 +24,6 @@ namespace CourseApi.DataLayer.DataContext.Entities
 		public List<AppUser> Users { get; set; } = [];
 		public List<CartItem> CartItems { get; set; } = [];
 		public Guid InstructorId { get; set; }
-		public AppUser Instructor { get; set; } = default!;
+		public InstructorDetail Instructor { get; set; } = default!;
 	}
 }

@@ -33,7 +33,9 @@ namespace CourseApi.DataLayer.ServiceDto_s.Responses.Course
 	public record InstructorDto
 	{
 		public string FullName { get; init; }
-		public string UserName { get; init; }
 		public string Email { get; init; }
+		public int StudentCount { get; set; }
+		public int CourseCount { get; set; }
+		public string Description { get; set; }
 	}
 }

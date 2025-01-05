@@ -20,5 +20,6 @@ namespace CourseApi.Service.Services.UserManager
 		Task<BaseApiResponse<string>> UpdateUserProfile(UpdateUserDetailDto userDetailDto, string userId);
 		Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetUserCourses(Guid userId);
 		Task<BaseApiResponse<TokenDto>> RefreshAcessToken(RefreshTokenRequest refreshTokenRequest);
+		Task<BaseApiResponse<IEnumerable<GetCourseListDto>>> GetTeachersCourses(Guid teacherId);
 	}
 }
