@@ -111,6 +111,11 @@ builder.Services.AddMassTransit(x =>
 		"course", false));
 });
 
+builder.Services.AddStackExchangeRedisCache(redisOptions =>
+{
+	redisOptions.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+
 ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("en");
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -313,6 +313,17 @@ namespace CourseApi.DataLayer.Initializer
 				context.Courses.AddRange(courses);
 				await context.SaveChangesAsync();
 			}
+
+			if (!context.CarouselItems.Any())
+			{
+				var carouselItems = new List<CarouselItem>
+				{
+					new CarouselItem { Title = "Improve Your Skills", Description = "Learn Python in 10 minutes", ImageUrl = "/CarouselItem1.png" },
+					new CarouselItem { Title = "Learn New Skills", Description = "Learn JavaScript in 10 minutes", ImageUrl = "/CarouselItem1.png" }
+				};
+				context.CarouselItems.AddRange(carouselItems);
+				await context.SaveChangesAsync();
+			}
 		}
 	}
 }

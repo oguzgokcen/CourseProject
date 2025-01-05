@@ -21,6 +21,7 @@ namespace CourseApi.DataLayer.DataContext
 		public DbSet<PaymentLog> PaymentLog { get; set; }
 		public DbSet<RefreshToken> RefreshTokens { get; set; }
 		public DbSet<InstructorDetail> InstructorDetails { get; set; }
+		public DbSet<CarouselItem> CarouselItems { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
