@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 using CourseApi.DataLayer.UoW;
 using FluentValidation;
 using System.Globalization;
+using CourseApi.ExceptionHandler;
 using MassTransit;
 using CourseApi.Messaging.Consumer;
 using Microsoft.Extensions.Logging;
@@ -78,8 +79,22 @@ builder.Services.AddServices();
 
 builder.Services.AddValidators();
 
+builder.Services.AddLogging(builder => builder.AddConsole());
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+builder.Services.AddProblemDetails();
+
 builder.Services.AddMassTransit(x =>
 {
+	x.AddEntityFrameworkOutbox<CourseDbContext>(o =>
+	{
+		o.QueryDelay = TimeSpan.FromSeconds(10);
+
+		o.UseSqlServer();
+		o.UseBusOutbox();
+	});
+
 	x.UsingRabbitMq((context, cfg) =>
 	{
 		cfg.Host("localhost", "/", h =>
@@ -108,6 +123,8 @@ if (app.Environment.IsDevelopment())
 {
 	app.UseCors("Localhost");
 }
+
+app.UseExceptionHandler();
 
 app.UseAuthentication();
 app.UseAuthorization();

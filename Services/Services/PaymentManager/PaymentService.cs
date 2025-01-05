@@ -14,7 +14,7 @@ using MassTransit;
 
 namespace CourseApi.Service.Services.PaymentManager
 {
-	public class PaymentService(ICartRepository _cartRepository,ICourseRepository _courseRepository, IPaymentRepository _paymentRepository, IValidator<PaymentRequestDto> _paymentValidator, IPublishEndpoint _publishEndpoint,IUnitOfWork _unitOfWork) : IPaymentService
+	public class PaymentService(ICartRepository _cartRepository,ICourseRepository _courseRepository, IValidator<PaymentRequestDto> _paymentValidator, IPublishEndpoint _publishEndpoint,IUnitOfWork _unitOfWork) : IPaymentService
 	{
 		public async Task<BaseApiResponse<bool>> CreatePaymentAsync(PaymentRequestDto paymentDto,Guid userId)
 		{
@@ -42,17 +42,10 @@ namespace CourseApi.Service.Services.PaymentManager
 
 			_cartRepository.ClearUserCart(userId);
 
-			await _unitOfWork.SaveChangesAsync();
+			await _publishEndpoint.Publish(new PaymentLogDto(userId, totalPrice, PaymentStatus.Completed,
+				cartCourses.Select(x => x.Id).ToList()));
 
-			try
-			{
-				await _publishEndpoint.Publish(new PaymentLogDto(userId, totalPrice, PaymentStatus.Completed,
-					cartCourses.Select(x => x.Id).ToList()));
-			}catch(Exception ex)
-			{
-				Console.WriteLine("Hata" + ex.Message);
-			}
-			Console.WriteLine("Continue task");
+			await _unitOfWork.SaveChangesAsync();
 
 			return BaseApiResponse<bool>.Success(true);
 		}

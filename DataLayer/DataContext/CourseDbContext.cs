@@ -2,6 +2,7 @@
 using CourseApi.DataLayer.DataContext.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -153,6 +154,9 @@ namespace CourseApi.DataLayer.DataContext
 					.OnDelete(DeleteBehavior.NoAction);
 			});
 
+			modelBuilder.AddInboxStateEntity();
+			modelBuilder.AddOutboxMessageEntity();
+			modelBuilder.AddOutboxStateEntity();
 		}
 	}
 }
